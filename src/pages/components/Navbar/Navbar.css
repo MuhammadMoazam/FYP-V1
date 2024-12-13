@@ -1,5 +1,5 @@
 .navbar {
-    font-family: Poppins,sans-serif;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
     width: 100%;
 }
 
@@ -7,7 +7,7 @@
     width: 100%;
     background-color: #2e3a79;
     color: white;
-    padding: 13px;
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,18 +16,19 @@
 .left-bar{
     font-weight: 600;
     font-style: italic;
-    font-size: 20px;
+    font-size: 18px;
     margin-left: 5%;
 }
 .right-bar
 {
-    font-size: 17px;
+    font-size: 14px;
     margin-right: 5%;
 }
 .bold
 {
     font-weight: bold;
-    font-size: 21px;
+    font-size: 18px;
+    gap: 10px;
 }
 
 .navbar-top-timer span {
@@ -44,11 +45,12 @@
 }
 .navbar-main-l
 {
+    margin-top: -2px;
     border: 0.3px solid rgb(228, 228, 228);
 }
 .navbar-main-ll
 {
-    margin-top: 20px;
+    margin-top: 10px;
     border: 0.3px solid rgb(228, 228, 228);
 }
 
@@ -63,7 +65,7 @@
     margin: 0 10px;
     text-decoration: none;
     color: black;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: 600;
     /* gap: 15px; */
     transition: 0.5s ease-out;
@@ -76,7 +78,7 @@
 }
 
 .navbar-actions {
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -86,7 +88,8 @@
 .currency-selector {
     color: #54595F;
     margin-right: 10px;
-    padding: 10px;
+    padding: 4px 7px 4px 7px;
+    font-size: 14px;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -95,9 +98,15 @@
     margin-right: 10px;
     position: relative;
     color: #54595F;
+    transition: color 0.3s ease-out;
+    text-decoration: none;
+    font-size: 14px;
 }
 .iconn{
+    text-decoration: none;
     color: #54595F;
+    font-size: 14px;
+
 }
 
 .cart-count {

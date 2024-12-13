@@ -7,8 +7,13 @@ const Contact = () =>
   return (
     <>
       <Navbar />
-      <h1>Contact</h1>
-    <Footer/>
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-heading">Welcome to Our Website</h1>
+          <p class="hero-description">Explore the world of endless possibilities and amazing content.</p>
+        </div>
+      </section>
+      <Footer />
     </>
   )
 }
