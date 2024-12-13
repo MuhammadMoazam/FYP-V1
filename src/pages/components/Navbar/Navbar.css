@@ -1,8 +1,10 @@
 .navbar {
     font-family: Poppins,sans-serif;
+    width: 100%;
 }
 
 .navbar-top {
+    width: 100%;
     background-color: #2e3a79;
     color: white;
     padding: 13px;
@@ -37,38 +39,65 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
+    margin-left:  4%;
+    margin-right: 4%;
+}
+.navbar-main-l
+{
+    border: 0.3px solid rgb(228, 228, 228);
+}
+.navbar-main-ll
+{
+    margin-top: 20px;
+    border: 0.3px solid rgb(228, 228, 228);
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
     color: #2e3a79;
+    cursor: pointer;
 }
 
 .navbar-links a {
     margin: 0 10px;
     text-decoration: none;
     color: black;
+    font-size: 19px;
+    font-weight: 600;
+    /* gap: 15px; */
+    transition: 0.5s ease-out;
+
 }
 
 .navbar-links a:hover {
     text-decoration: underline;
+    color: #4a5bbf;
 }
 
 .navbar-actions {
+    font-size: 16px;
     display: flex;
     align-items: center;
+    gap: 6px;
+    color: #54595F;
 }
 
 .currency-selector {
+    color: #54595F;
     margin-right: 10px;
-    padding: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .cart {
     margin-right: 10px;
     position: relative;
+    color: #54595F;
+}
+.iconn{
+    color: #54595F;
 }
 
 .cart-count {
@@ -88,37 +117,54 @@
 }
 
 .navbar-search input {
-    padding: 5px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.search-btn {
-    padding: 5px 10px;
-    background-color: #2e3a79;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    margin-left: 5px;
-    cursor: pointer;
 }
 
 .search-btn:hover {
     background-color: #4a5bbf;
 }
 
-.navbar-lower {
-    margin-top: 20px;
-}
 
 .navbar-bottom {
     display: flex;
     justify-content: space-between;
-    /* Aligns navbar-links to the left and navbar-search to the right */
     align-items: center;
+    margin-left: 4%;
+    margin-right: 5%;
 }
 .navbar-search {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0px;
+    border-right-color: white;
+    display: flex;
+    position: relative;
+    width: 100%;
+    max-width: 200px; /* Optional: limit the max width */
+}
+.search-input {
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-btn {
+    padding: 8px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-left: none; /* Remove the left border to make it seamless with the input */
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-btn svg {
+    font-size: 18px; /* Adjust icon size */
 }

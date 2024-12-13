@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
+import { Link } from 'react-router-dom';
+import { FaShoppingCart, FaUser, FaRegHeart } from 'react-icons/fa';
 
 const Navbar = () =>
 {
@@ -68,30 +70,39 @@ const Navbar = () =>
                 <div className="navbar-actions">
                     <select className="currency-selector">
                         <option value="PKR">Rs PKR</option>
-                        {/* Add other currencies if needed */}
+                        <option value="USD">$ USD</option>
+                        <option value="AED">$ AED</option>
+
                     </select>
-                    <a href="/cart" className="cart">
-                        Cart <span className="cart-count">1</span>
-                    </a>
-                    <a href="/account">My account</a>
-                    <a href="/wishlist">Wishlist</a>
+                    <Link to="/" className="cart">
+                        <FaShoppingCart color='#54595F' /> Cart
+                    </Link>
+                    <Link className='iconn' to="/">
+                        <FaUser color='#54595F'/> My account
+                    </Link>
+                    <Link className='iconn' to="/">
+                        <FaRegHeart color='#54595F'/> Wishlist
+                    </Link>
                 </div>
             </div>
+            <p className='navbar-main-l'></p>
             <div className="navbar-lower">
-                {/* Flexbox layout for lower navbar */}
                 <div className="navbar-bottom">
                     <nav className="navbar-links">
-                        <a href="/home">Home</a>
-                        <a href="/about">About Us</a>
-                        <a href="/shop">Shop</a>
-                        <a href="/contact">Contact</a>
-                        <a href="/blog">Blog</a>
+                        <Link to='/'>Home</Link>
+                        <Link to='/about'>About Us</Link>
+                        <Link to='/shop'>Shop</Link>
+                        <Link to='/contact'>Contact</Link>
+                        <Link to='/blog'>Blog</Link>
                     </nav>
-                    <div className="navbar-search">
-                        <input type="text" placeholder="Search..." />
-                        <button className="search-btn">🔍</button>
-                    </div>
+                    {/* <div className="navbar-search">
+                        <input type="text" placeholder="Search..." className="search-input" />
+                        <button className="search-btn">
+                        🔍
+                        </button>
+                    </div> */}
                 </div>
+            <p className='navbar-main-ll'></p>
             </div>
         </header>
     );
