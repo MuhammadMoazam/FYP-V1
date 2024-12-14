@@ -11,7 +11,7 @@
 
 .content {
     display: flex;
-    align-items: stretch; /* Align items to stretch to full height */
+    align-items: flex-start; /* Align items to the top */
     justify-content: center;
     gap: 20px; /* Space between elements */
 }
@@ -21,7 +21,7 @@
     border-radius: 8px;
     padding: 20px;
     width: 300px; /* Fixed width */
-    background-color: #f9f9f9; /* Light background */
+    background-color: #ffffff; /* White background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative; /* Required for the divider */
 }
@@ -42,8 +42,9 @@ li {
 }
 
 .divider {
-    width: 2px; /* Width of the line */
-    background-color: #007bff; /* Line color */
+    width: 20px; /* Width of the divider space */
+    border-left: 2px solid #007bff; /* Vertical line color */
+    height: 100%; /* Full height */
 }
 
 /* Media Queries */
