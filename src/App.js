@@ -14,6 +14,8 @@ import Home from './pages/Home/Home';
 import Term from './pages/Terms/Terms';
 import Cart from './pages/Cart/Cart';
 import Legal from './pages/Legal/Legal';
+import Account from './pages/Account/Account';
+
 
 const App = () =>
 {
@@ -29,6 +31,7 @@ const App = () =>
         <Route path="/terms" element={<Term />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </Router>
   );
