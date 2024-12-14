@@ -1,13 +1,19 @@
 import React from 'react'
 import './About.css'
-import Navbar from '../components/Navbar/Navbar'
-import Footer from '../components/Footer/Footer'
+import Navbar from '../../components/Navbar/Navbar'
+import Footer from '../../components/Footer/Footer'
+import Banner from '../../components/Lower_Banner/Lower_Banner'
+import TImage from '../../components/TImage/TImage'
 
 const About = () => {
   return (
     <>
       <Navbar />
-      <h1>About Us</h1>
+      <TImage
+        title="About Us"
+        description="Discover our story, passion, and commitment to quality fashion"
+      />
+      <Banner />
       <Footer />
     </>
   )
