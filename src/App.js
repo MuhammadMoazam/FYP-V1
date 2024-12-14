@@ -15,6 +15,7 @@ import Term from './pages/Terms/Terms';
 import Cart from './pages/Cart/Cart';
 import Legal from './pages/Legal/Legal';
 import Account from './pages/Account/Account';
+import Wishlist from './pages/Wishlist/Wishlist';
 
 
 const App = () =>
@@ -32,6 +33,7 @@ const App = () =>
         <Route path="/legal" element={<Legal />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
     </Router>
   );
