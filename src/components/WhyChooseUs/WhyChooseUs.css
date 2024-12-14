@@ -51,7 +51,7 @@ li {
 @media (max-width: 768px) {
     .content {
         flex-direction: column;
-        align-items: center;
+        align-items:center ;
     }
 
     .with-us, .competitors {

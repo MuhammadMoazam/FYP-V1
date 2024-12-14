@@ -12,6 +12,7 @@ import Contact from './pages/Contact/Contact';
 import Blog from './pages/Blog/Blog';
 import Home from './pages/Home/Home';
 import Term from './pages/Terms/Terms';
+import Cart from './pages/Cart/Cart';
 import Legal from './pages/Legal/Legal';
 
 const App = () =>
@@ -27,6 +28,7 @@ const App = () =>
         <Route path="/blog" element={<Blog />} />
         <Route path="/terms" element={<Term />} />
         <Route path="/legal" element={<Legal />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </Router>
   );

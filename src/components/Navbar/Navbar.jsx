@@ -74,13 +74,13 @@ const Navbar = () =>
                         <option value="AED">$ AED</option>
 
                     </select>
-                    <Link to="/" className="cart">
+                    <Link to="/cart" className="cart">
                         <FaShoppingCart color='#54595F' /> Cart
                     </Link>
-                    <Link className='iconn' to="/">
+                    <Link className='iconn' to="/acount">
                         <FaUser color='#54595F'/> My account
                     </Link>
-                    <Link className='iconn' to="/">
+                    <Link className='iconn' to="/wishlist">
                         <FaRegHeart color='#54595F'/> Wishlist
                     </Link>
                 </div>

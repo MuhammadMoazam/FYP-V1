@@ -1,11 +1,15 @@
 .slider {
     position: relative;
-    width: calc(100% - 40px);
+    width: calc(100% - 100px);
     height: 73vh;
-    margin: 20px;
+    /* margin: 20px; */
     overflow: hidden;
     border-radius: 10px;
+    margin-top: -10px;
+    margin-left: 4%;
+    margin-right: 4%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
   }
   
   .slider-content {
@@ -43,13 +47,13 @@
   }
   
   .slider-title {
-    font-size: 50px;
+    font-size: 39px;
     font-weight: bold;
     margin: 0 0 10px 0;
   }
   
   .lifestyle {
-    font-size: 56px;
+    font-size: 39px;
     margin: 0;
   }
   
@@ -67,6 +71,7 @@
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    margin-bottom: 80px;
   }
   
   .slider-button:hover {

@@ -11,7 +11,7 @@ const Contact = () =>
       <Navbar />
       <TImage
         title="Contact Us"
-        description="Get in touch with us for support and inquiries."
+        description="Get in touch with us for more support and any inquiries about brand."
       />
       <Banner />
       <Footer />
