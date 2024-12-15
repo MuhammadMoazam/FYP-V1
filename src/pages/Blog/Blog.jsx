@@ -10,7 +10,7 @@ const Blog = () => {
       <Navbar />
       <TImage
         title="Our Blogs"
-        description="Stay updated with Us for fashion tips, trends, and news."
+        description="Explore trends, tips, and updates about fashion, style, and our store."
       />
       <Banner />
     <Footer/>

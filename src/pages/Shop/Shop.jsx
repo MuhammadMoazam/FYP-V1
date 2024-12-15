@@ -10,7 +10,7 @@ const Shop = () => {
       <Navbar />
       <TImage
         title="Shop"
-        description="Explore our latest collection of stylish clothing and accessories."
+        description="Browse our trendy collections and shop the latest in fashion styles."
       />
       <Banner />
     <Footer/>

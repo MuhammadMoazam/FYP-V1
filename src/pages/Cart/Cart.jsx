@@ -9,7 +9,7 @@ const Cart = () =>
             <Navbar />
             <TImage
                 title="Cart"
-                description="Get your all favorite products here at good price."
+                description="View, update, and proceed to checkout for your selected items."
             />
         <Footer/>
         </>

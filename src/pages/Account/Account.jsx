@@ -9,7 +9,7 @@ const Account = () =>
             <Navbar />
             <TImage
                 title="My Account"
-                description="Access all your details here and get all features."
+                description="Manage your profile, orders, and settings for a seamless shopping experience."
             />
             <Footer />
         </>
