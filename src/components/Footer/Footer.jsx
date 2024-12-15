@@ -1,6 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css"
+const handleScrollToTop = () =>
+{
+    window.scrollTo({
+        top: 0, // Scroll to the top of the page
+        behavior: "smooth", // Smooth scroll animation
+    });
+}
 const Footer = () =>
 {
     return (
@@ -28,11 +35,11 @@ const Footer = () =>
                 <div className="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/about">About Us</Link></li>
-                        <li><Link to="/shop">Shop</Link></li>
-                        <li><Link to="/contact">Contact</Link></li>
-                        <li><Link to="/blog">Blog</Link></li>
+                        <li><Link to="/" onClick={handleScrollToTop}>Home</Link></li>
+                        <li><Link to="/about" onClick={handleScrollToTop}>About Us</Link></li>
+                        <li><Link to="/shop" onClick={handleScrollToTop}>Shop</Link></li>
+                        <li><Link to="/contact" onClick={handleScrollToTop}>Contact</Link></li>
+                        <li><Link to="/blog" onClick={handleScrollToTop} >Blog</Link></li>
                     </ul>
                 </div>
 
@@ -40,8 +47,8 @@ const Footer = () =>
                 <div className="footer-section">
                     <h3>Important Links</h3>
                     <ul>
-                        <li><Link to="/terms">Terms and Conditions</Link></li>
-                        <li><Link to="/legal">Legal</Link></li>
+                        <li><Link to="/terms" onClick={handleScrollToTop}>Terms and Conditions</Link></li>
+                        <li><Link to="/legal" onClick={handleScrollToTop}>Legal</Link></li>
                     </ul>
                 </div>
 
