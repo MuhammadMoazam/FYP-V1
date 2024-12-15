@@ -64,6 +64,7 @@ const Contactcomp = () =>
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
+                    title='Google map'
                 ></iframe>
             </section>
 

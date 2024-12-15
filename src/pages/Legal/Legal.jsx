@@ -12,7 +12,7 @@ const Legal = () =>
       <Navbar />
       <TImage
         title="Legal "
-        description="Read our privacy policy, terms, and legal disclaimers."
+        description="Find essential legal information regarding UrbanClothe’s policies and services."
       />
       <Legalcomp />
       <Banner />

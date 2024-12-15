@@ -77,7 +77,7 @@ const Navbar = () =>
                     <Link to="/cart" className="cart">
                         <FaShoppingCart color='#54595F' /> Cart
                     </Link>
-                    <Link className='iconn' to="/acount">
+                    <Link className='iconn' to="/account">
                         <FaUser color='#54595F'/> My account
                     </Link>
                     <Link className='iconn' to="/wishlist">

@@ -12,7 +12,7 @@ const Term = () =>
       <Navbar />
       <TImage
         title="Terms and Conditions"
-        description="Please read our terms and conditions before using our services."
+        description="Read our terms governing purchases, policies, and store interactions."
       />
       <TermsConditions />
       <Banner />

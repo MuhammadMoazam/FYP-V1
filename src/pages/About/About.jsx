@@ -15,7 +15,7 @@ const About = () => {
       <Navbar />
       <TImage
         title="About Us"
-        description="Discover our story, passion, and commitment to quality fashion"
+        description="Discover our story, values, and passion for delivering quality fashion."
       />
       <AboutOne/>
       <AboutTwo/>

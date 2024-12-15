@@ -9,7 +9,7 @@ const Wishlist = () =>
             <Navbar />
             <TImage
                 title="My Account"
-                description="Access all your details here and get all features."
+                description="Save your favorite items here to shop later with ease."
             />
             <Footer />
         </>
