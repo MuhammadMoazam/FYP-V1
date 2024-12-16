@@ -57,16 +57,17 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.5);
+    color:white;
     padding: 15px; /* Increased padding for content */
     text-align: center; /* Centered text */
   }
   
   .category-info h3 {
     margin: 0;
-    font-size: 20px; /* Adjusted font size */
+    font-size: 16px; /* Adjusted font size */
     font-weight: bold; /* Made the title bold */
-    color: #333; /* Darker color for better readability */
+    color: #1f1d1d; /* Darker color for better readability */
   }
   
   .category-info p {
@@ -81,7 +82,7 @@
     bottom: 0; /* Align to bottom */
     left: 0;
     right: 0;
-    background-color: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    background-color: rgba(255, 255, 255, 0.5); /* White background with slight transparency */
     color: #333; /* Match text color */
     font-size: 1.2rem;
     font-weight: bold;
