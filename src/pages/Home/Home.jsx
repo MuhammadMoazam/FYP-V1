@@ -8,6 +8,8 @@ import ProductCategories from 'components/ProductCategories/ProductCategories'
 import Stats from 'components/Stats/Stats'
 import WhyChooseUs from 'components/WhyChooseUs/WhyChooseUs'
 import Products from 'components/Products/Products'
+import DealOfTheDay from 'components/DealOfTheDay/DealOfTheDay'
+import HowToAvailOffers from 'components/HowToAvailOffers/HowToAvailOffers'
 
 const Home = () => {
   return (
@@ -18,6 +20,8 @@ const Home = () => {
       <Stats/>
       <WhyChooseUs/>
       <Products/>
+      <DealOfTheDay></DealOfTheDay>
+      <HowToAvailOffers></HowToAvailOffers>
       <Banner />
       <Footer />
     </div>
