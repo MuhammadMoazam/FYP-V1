@@ -43,26 +43,26 @@ const Login = () => {
                 <div className='form-container'>
                     <form className='form'>
                         <div className='input-container'>
-                            <label style={{ fontWeight: 'bold', fontFamily: 'cursive', color: 'gray' }}> {loginOrRegister ? 'Username or email address' : 'Email address'} <label style={{ color: 'red' }}>*</label></label>
-                            <input type={loginOrRegister ? 'text' : 'email'} style={{ width: '80%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', marginTop: '10px', marginBottom: '10px' }} />
+                            <label className='heading-1-style'> {loginOrRegister ? 'Username or email address' : 'Email address'} <label style={{ color: 'red' }}>*</label></label>
+                            <input type={loginOrRegister ? 'text' : 'email'} className='input-style' />
                         </div>
                         <div className='input-container'>
-                            <label style={{ fontWeight: 'bold', fontFamily: 'cursive', color: 'gray' }}>Password <label style={{ color: 'red' }}>*</label></label>
-                            <input type='password' style={{ width: '80%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px', marginTop: '10px', marginBottom: '10px' }} />
+                            <label className='heading-1-style'>Password <label style={{ color: 'red' }}>*</label></label>
+                            <input type='password' className='input-style' />
                         </div>
                         {
                             loginOrRegister ? (
-                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'start', height: '50px' }}>
-                                    <label style={{ fontWeight: 'bold', fontSize: '12px', fontFamily: 'monospace', color: '#3b4fe4' }}> Forgot Your Password? </label>
+                                <div className='checkbox-container' >
+                                    <label className='heading-2-style' style={{ fontSize: '12px', color: '#3b4fe4' }}> Forgot Your Password? </label>
 
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <input type="checkbox" name="remember" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
-                                        <label style={{ fontWeight: 'bold', fontSize: '15px', fontFamily: 'monospace', color: 'gray' }}>Remember me</label>
+                                        <label className='heading-2-style' style={{ fontSize: '15px' }}>Remember me</label>
                                     </div>
                                 </div>
                             ) : (
-                                <div style={{ width: '500px' }}>
-                                    <label style={{ width: '10px', fontWeight: 'bold', fontFamily: 'monospace', color: 'gray' }}>
+                                <div style={{ width: '100%', maxWidth: '500px' }}>
+                                    <label className='heading-2-style' style={{ width: '10px' }}>
                                         Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a rel="stylesheet" href="/privacy-policy" style={{ color: '#3b4fe4', textDecoration: 'none' }}>privacy policy</a>.
                                     </label>
                                 </div>

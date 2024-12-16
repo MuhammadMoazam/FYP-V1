@@ -2,26 +2,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    height: 100%;
     padding-top: 10vh;
 }
 
 .account-welcome-container {
-    height: 15%;
-    width: 60%;
+    position: relative;
+    height: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     justify-content: start;
 }
 
 .account-settings-container {
-    height: 85%;
-    width: 60%;
+    height: auto;
+    width: 100%;
     margin-top: 5rem;
+    padding: 5rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: start;
     justify-content: start;
 }
@@ -54,9 +55,10 @@
 }
 
 .account-settings-content {
-    width: 80%;
+    width: 100%;
+    max-width: 1000px;
     height: auto;
-    margin-left: 5rem;
+    margin-top: 5rem;
     padding: 20px;
     background-color: transparent;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -65,6 +67,29 @@
     align-items: start;
     justify-content: start;
 }
+
+@media screen and (min-width: 1200px) {
+    .account-welcome-container {
+        width: 60%;
+        align-items: start;
+    }
+
+    .account-settings-container {
+        width: 60%;
+        flex-direction: row;
+        padding: 0;
+        margin-bottom: 5rem;
+    }
+
+    .account-settings-content {
+        margin-left: 5rem;
+        margin-top: 0;
+    }
+
+    .address-container {
+        height: 200px; 
+    }
+    }
 
 .name-inputs-container {
     width: 100%;
@@ -102,11 +127,22 @@
 }
 
 .address-container {
-    width: 45%;
-    height: 200px;
+    width: 80%;
+    height: 300px;
     border: 1px solid gray;
     display: flex;
+    margin: 1rem;
     flex-direction: column;
+}
+
+@media screen and (max-width: 500px) {
+    .addresses-wrapper {
+        flex-direction: column;
+    }
+
+    .address-container {
+        height: 200px;
+    }
 }
 
 .address-container-header {
@@ -142,7 +178,8 @@
 }
 
 .orders-container {
-    width: 90%;
+    width: 100%;
+    height: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -192,7 +229,7 @@
 }
 
 .downloads-container {
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

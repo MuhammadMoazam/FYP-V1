@@ -17,7 +17,7 @@ function Account() {
                 <div className='account-welcome-container'>
                     <h3>Welcome to your Account</h3>
 
-                    <p style={{ width: '60%' }}>
+                    <p style={{ width: '90%' }}>
                         We're thrilled to have you here in your personal e-commerce haven. This is your central hub for managing all things related to your shopping experience.
                     </p>
                 </div>
@@ -27,7 +27,7 @@ function Account() {
                         <li className={`account-component-button ${selected === 0 ? 'active' : ''}`} onClick={() => setSelected(0)}>Account Details</li>
                         <li className={`account-component-button ${selected === 1 ? 'active' : ''}`} onClick={() => setSelected(1)}>Addresses</li>
                         <li className={`account-component-button ${selected === 2 ? 'active' : ''}`} onClick={() => setSelected(2)}>Orders</li>
-                        <li className={`account-component-button ${selected === 2 ? 'active' : ''}`} onClick={() => setSelected(3)}>Downloads</li>
+                        <li className={`account-component-button ${selected === 3 ? 'active' : ''}`} onClick={() => setSelected(3)}>Downloads</li>
                     </ul>
 
                     <div className='account-settings-content'>
