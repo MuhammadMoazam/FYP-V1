@@ -1,0 +1,308 @@
+/* Container */
+.checkout-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Coupon Section */
+.coupon-section {
+  text-align: left;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 20px;
+}
+
+.coupon-section a {
+  color: #5a67d8;
+  text-decoration: none;
+}
+
+.coupon-section a:hover {
+  text-decoration: underline;
+}
+
+/* Checkout Content */
+.checkout-content {
+  display: flex;
+  flex-wrap: wrap; /* Ensure content wraps on smaller screens */
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.billing-details,
+.order-summary {
+  padding: 2rem;
+}
+
+/* Responsive Flexbox Layout */
+.billing-details {
+  flex: 2;
+  width: 100%;
+}
+
+.order-summary {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  width: 100%;
+}
+
+/* Form Styling */
+.billing-form .form-row {
+  display: flex;
+  flex-wrap: wrap; /* Ensure the form fields wrap on smaller screens */
+  gap: 1.5rem; /* Space between inputs */
+}
+
+.billing-form .form-group {
+  margin-bottom: 1.5rem; /* Space between rows */
+  width: 100%;
+}
+
+/* Responsive Form Field Sizing */
+.billing-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.billing-form input,
+.billing-form select,
+.billing-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Ensures padding does not affect width */
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 200px; /* Ensures inputs don’t get too narrow */
+}
+
+.additional-info textarea {
+  height: 100px;
+  resize: none;
+}
+
+.form-group textarea {
+  width: 100%;
+  height: 150px; /* Set an initial height */
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: both; /* Allows resizing both horizontally and vertically */
+  overflow: auto; /* Ensures scrolling if text overflows */
+}
+
+
+/* General form styling */
+.billing-form input,
+.billing-form select,
+.billing-form textarea,
+.additional-info-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Add focus styles */
+.billing-form input:focus,
+.billing-form select:focus,
+.billing-form textarea:focus,
+.additional-info-form textarea:focus {
+  outline: none;
+  border-color: #5a67d8;
+  box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
+}
+
+/* Consistent labels */
+.billing-form label,
+.additional-info-form label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #333;
+}
+
+/* Form rows */
+.billing-form .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.billing-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Dropdown icon alignment */
+.dropdown-select {
+  position: relative;
+  background: #f9f9f9 url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="10" height="6"%3E%3Cpath fill="%23666" d="M5 6L0 0h10z"/%3E%3C/svg%3E') no-repeat right 1rem center;
+  appearance: none;
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+  background-size: 0.65rem;
+}
+
+/* Submit button styling */
+.place-order-button {
+  background-color: #5a67d8;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.place-order-button:hover {
+  background-color: #434190;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .billing-form .form-row {
+    flex-direction: column;
+  }
+}
+
+
+.form-group h5{
+  font-weight: bold;
+}
+
+.additional-info {
+  padding: 30px ;
+}
+
+/* Order Summary */
+.order-items,
+.order-pricing {
+  margin-bottom: 1rem;
+}
+
+.order-pricing {
+  color: rgb(0, 81, 255);
+}
+
+.order-item,
+.subtotal,
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  border-bottom: 1px solid #a9a9a9;
+  padding-bottom: 25px;
+}
+
+.form-group label{
+  color: #9a9999;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.payment-options label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.payment-description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Place Order Button */
+.place-order-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #5a67d8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.place-order-button:hover {
+  background-color: #434190;
+}
+
+.form-group span{
+  color: red;
+}
+
+.additional-info-form{
+  background-color: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .checkout-container {
+    width: 95%;
+  }
+
+  .checkout-content {
+    flex-direction: column;
+  }
+
+  .billing-details,
+  .order-summary {
+    width: 100%;
+  }
+
+  .billing-form .form-row {
+    flex-direction: column;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .order-summary {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .checkout-container {
+    width: 100%;
+    margin: 1rem;
+  }
+
+  .coupon-section {
+    padding: 10px;
+  }
+
+  .place-order-button {
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .order-item {
+    font-size: 0.9rem;
+  }
+
+  .order-items,
+  .order-pricing {
+    font-size: 0.9rem;
+  }
+}
