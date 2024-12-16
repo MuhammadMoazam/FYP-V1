@@ -1,0 +1,137 @@
+/* Container */
+.offers-container {
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    text-align: center;
+  }
+  
+  .offers-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  /* Timeline Layout */
+  .timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .timeline-item {
+    display: flex;
+    margin: 1.5rem 0;
+    align-items: center;
+    position: relative;
+  }
+  
+  .left {
+    flex-direction: row-reverse;
+    text-align: left;
+  }
+  
+  .right {
+    text-align: left;
+  }
+  
+  /* Timeline Icons */
+  .timeline-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  .active-icon {
+    background-color: #1d3275;
+    color: #fff;
+  }
+  
+  /* Timeline Content */
+  .timeline-content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+  }
+  
+  .timeline-content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    color: #1d3275;
+  }
+  
+  .timeline-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .timeline-content a {
+    color: #1d3275;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  /* Contact Button */
+  .contact-button {
+    margin-top: 2rem;
+  }
+  
+  .contact-button button {
+    background-color: #1d3275;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .contact-button button:hover {
+    background-color: #143366;
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .timeline-item {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .timeline-icon {
+      margin: 0.5rem auto;
+    }
+  
+    .timeline-content {
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .offers-title {
+      font-size: 1.5rem;
+    }
+  
+    .timeline-content h3 {
+      font-size: 1rem;
+    }
+  
+    .timeline-content p {
+      font-size: 0.8rem;
+    }
+  
+    .contact-button button {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+    }
+  }
