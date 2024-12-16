@@ -1,5 +1,4 @@
 import React from 'react'
-import TImage from 'components/TImage/TImage'
 import Navbar from 'components/Navbar/Navbar'
 import Footer from 'components/Footer/Footer'
 const Wishlist = () =>
@@ -7,10 +6,7 @@ const Wishlist = () =>
     return (
         <>
             <Navbar />
-            <TImage
-                title="My Account"
-                description="Save your favorite items here to shop later with ease."
-            />
+            <h2 className="text-center">No items in Wishlist</h2>
             <Footer />
         </>
     )

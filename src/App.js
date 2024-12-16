@@ -16,7 +16,6 @@ import Cart from './pages/Cart/Cart';
 import Legal from './pages/Legal/Legal';
 import Account from './pages/Account/Account';
 import Wishlist from './pages/Wishlist/Wishlist';
-import login from './pages/login/Login';
 
 
 const App = () =>
@@ -35,7 +34,6 @@ const App = () =>
         <Route path="/cart" element={<Cart />} />
         <Route path="/account" element={<Account />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/login" element={<login />} />
       </Routes>
     </Router>
   );

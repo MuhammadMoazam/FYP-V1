@@ -16,12 +16,12 @@ const ProductCategories = () => {
     },
     {
       title: "Women Collection",
-      subtitle: "Latest Trends",
+      subtitle: "",
       image: image4, // Replace with actual image path
     },
     {
       title: "Kids Collection",
-      subtitle: "All Season",
+      subtitle: "",
       image: image5, // Replace with actual image path
     },
     {
