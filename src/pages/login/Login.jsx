@@ -57,7 +57,7 @@ const Login = () => {
 
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                         <input type="checkbox" name="remember" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
-                                        <label className='heading-2-style' style={{ fontSize: '15px' }}>Remember me</label>
+                                        <label className='heading-1-style' style={{ fontSize: '15px' }}>Remember me</label>
                                     </div>
                                 </div>
                             ) : (

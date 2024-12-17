@@ -4,7 +4,7 @@ function AccountDetails() {
         <>
             <div className='name-inputs-container'>
                 {Input('First Name', 'text')}
-
+                <div style={{ width: '100px' }}></div>
                 {Input('Last Name', 'text')}
             </div>
 
@@ -44,7 +44,7 @@ function Addresses() {
     return (
         <>
 
-            <label className="heading-1-style" style={{ fontFamily: 'unset' }}>The following addresses will be used on the checkout page by default.</label>
+            <label className="heading-1-style">The following addresses will be used on the checkout page by default.</label>
 
             <div className='addresses-wrapper'>
                 {AddressContainer('Billing')}
@@ -59,9 +59,9 @@ function AddressContainer(type) {
     return (
         <div className='address-container'>
             <div className="address-container-header">
-                <label style={{ fontWeight: 'bold', fontSize: '30px', color: 'black' }}>{type} Address</label>
+                <label className="address-container-header-label">{type} Address</label>
 
-                <a href="/" className="address-container-add-label" > Add a new {type} address </a>
+                <a href="/" className="address-container-add-label" > Add {type} address </a>
             </div>
 
             {/* Divider */}
