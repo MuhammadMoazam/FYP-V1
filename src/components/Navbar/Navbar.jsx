@@ -75,7 +75,8 @@ const Navbar = () =>
 
                     </select>
                     <Link to="/cart" className="cart">
-                        <FaShoppingCart color='#54595F' /> Cart
+                        <FaShoppingCart color='#54595F' />
+                        Cart
                     </Link>
                     <Link className='iconn' to="/account">
                         <FaUser color='#54595F'/> My account
