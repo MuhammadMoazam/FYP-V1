@@ -1,206 +1,201 @@
 .slider {
-    position: relative;
-    width: calc(100% - 100px);
-    height: 73vh;
-    /* margin: 20px; */
-    overflow: hidden;
-    border-radius: 10px;
-    margin-top: -10px;
-    margin-left: 4%;
-    margin-right: 4%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-  }
-  
-  .slider-content {
-    display: flex;
-    transition: transform 0.5s ease; /* Smooth transition for sliding */
-  }
-  
-  .slide {
-    min-width: 100%; /* Each slide takes full width */
-    height: 100%; /* Each slide takes full height */
-    background-size: cover; /* Ensure the background covers the area */
-    background-position: center; /* Center the image */
-    position: relative; /* Required for overlay positioning */
-  }
-  
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Dim the background */
-    z-index: 1; /* Place overlay behind text */
-  }
-  
-  .text-overlay {
-    color: white;
-    text-align: left;
-    padding: 40px 20px;
-    z-index: 2; /* Ensure text is above the overlay */
-    max-width: 600px;
-    margin-left: 50px;
-    margin-top: 20px;
-    position: relative; /* Ensure text is on top */
-  }
-  
-  .slider-title {
-    font-size: 39px;
-    font-weight: bold;
-    margin: 0 0 10px 0;
-  }
-  
-  .lifestyle {
-    font-size: 39px;
-    margin: 0;
-  }
-  
-  .slider-description {
-    margin: 20px 0;
-    font-size: 20px;
-  }
-  
-  .slider-button {
-    background-color: blue;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    margin-bottom: 80px;
-  }
-  
-  .slider-button:hover {
-    background-color: darkblue;
-  }
-  
-  .slider-controls {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-  }
-  
-  .slider-dot {
-    height: 10px;
-    width: 10px;
-    margin: 0 5px;
-    background-color: white;
-    border-radius: 50%;
-    opacity: 0.5;
-    cursor: pointer;
-  }
-  
-  .slider-dot.active {
-    opacity: 1;
-  }
-  
-  .slider-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 30px;
-    cursor: pointer;
-    color: white;
-    z-index: 2; /* Ensure arrows are above the overlay */
-  }
-  
-  .left-arrow {
-    left: 20px;
-  }
-  
-  .right-arrow {
-    right: 20px;
-  }
+  position: relative;
+  width: calc(100% - 40px);
+  height: 73vh;
+  margin: 20px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.slider-content {
+  display: flex;
+  transition: transform 0.5s ease; /* Smooth transition for sliding */
+}
+
+.slide {
+  min-width: 100%; /* Each slide takes full width */
+  height: 100%; /* Each slide takes full height */
+  background-size: cover; /* Ensure the background covers the area */
+  background-position: center; /* Center the image */
+  position: relative; /* Required for overlay positioning */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Dim the background */
+  z-index: 1; /* Place overlay behind text */
+}
+
+.text-overlay {
+  color: white;
+  text-align: left;
+  padding: 40px 20px;
+  z-index: 2; /* Ensure text is above the overlay */
+  max-width: 600px;
+  margin-left: 50px;
+  margin-top: 20px;
+  position: relative; /* Ensure text is on top */
+}
+
+.slider-title {
+  font-size: 50px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.lifestyle {
+  font-size: 56px;
+  margin: 0;
+}
+
+.slider-description {
+  margin: 20px 0;
+  font-size: 20px;
+}
+
+.slider-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.slider-button:hover {
+  background-color: darkblue;
+}
+
+.slider-controls {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.slider-dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 5px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.slider-dot.active {
+  opacity: 1;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+  z-index: 2; /* Ensure arrows are above the overlay */
+}
+
+.left-arrow {
+  left: 20px;
+}
+
+.right-arrow {
+  right: 20px;
+}
 
 
-  /* Base styles already provided above */
+/* Base styles already provided above */
 
 /* Media Query for Tablets (768px and below) */
 @media (max-width: 768px) {
-  .slider {
-    height: 60vh; /* Reduce height for smaller screens */
-  }
+.slider {
+  height: 60vh; /* Reduce height for smaller screens */
+}
 
-  .text-overlay {
-    padding: 20px 15px; /* Adjust padding for smaller screens */
-    max-width: 90%; /* Ensure the text does not overflow */
-    margin-left: 20px;
-  }
+.text-overlay {
+  padding: 20px 15px; /* Adjust padding for smaller screens */
+  max-width: 90%; /* Ensure the text does not overflow */
+  margin-left: 20px;
+}
 
-  .slider-title {
-    font-size: 36px; /* Reduce font size for titles */
-  }
+.slider-title {
+  font-size: 36px; /* Reduce font size for titles */
+}
 
-  .lifestyle {
-    font-size: 40px; /* Adjust font size for smaller screens */
-  }
+.lifestyle {
+  font-size: 30px; /* Adjust font size for smaller screens */
+}
 
-  .slider-description {
-    font-size: 16px; /* Reduce font size for description */
-  }
+.slider-description {
+  font-size: 16px; /* Reduce font size for description */
+}
 
-  .slider-button {
-    padding: 10px 20px; /* Adjust button padding */
-    font-size: 16px; /* Reduce button font size */
-    position: absolute; /* Prevent button from moving out of the slider */
-    bottom: 20px; /* Position at the bottom of the slider */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Align to center */
-  }
+.slider-button {
+  padding: 10px 20px; /* Adjust button padding */
+  font-size: 16px; /* Reduce button font size */
+  position: absolute; /* Prevent button from moving out of the slider */
+  bottom: 20px; /* Position at the bottom of the slider */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Align to center */
+}
 
-  .slider-arrow {
-    font-size: 24px; /* Make arrows smaller */
-  }
+.slider-arrow {
+  font-size: 24px; /* Make arrows smaller */
+}
 }
 
 /* Media Query for Mobile Phones (480px and below) */
 @media (max-width: 480px) {
-  .slider {
-    height: 50vh; /* Further reduce height for phones */
-  }
+.slider {
+  height: 50vh; /* Further reduce height for phones */
+}
 
-  .text-overlay {
-    padding: 15px 10px; /* Smaller padding for mobile */
-    margin-left: 10px; /* Align closer to the edge */
-  }
+.text-overlay {
+  padding: 15px 10px; /* Smaller padding for mobile */
+  margin-left: 10px; /* Align closer to the edge */
+}
 
-  .slider-title {
-    font-size: 28px; /* Reduce font size for better fit */
-  }
+.slider-title {
+  font-size: 28px; /* Reduce font size for better fit */
+}
 
-  .lifestyle {
-    font-size: 30px; /* Adjust headline font size */
-  }
+.lifestyle {
+  font-size: 30px; /* Adjust headline font size */
+}
 
-  .slider-description {
-    font-size: 14px; /* Smaller font size for descriptions */
-  }
+.slider-description {
+  font-size: 14px; /* Smaller font size for descriptions */
+}
 
-  .slider-button {
-    padding: 8px 16px; /* Smaller button size */
-    font-size: 14px; /* Adjust button font size */
-    position: absolute; /* Prevent button from moving out of the slider */
-    bottom: 15px; /* Position slightly above the bottom */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Align to center */
-  }
+.slider-button {
+  padding: 8px 16px; /* Smaller button size */
+  font-size: 14px; /* Adjust button font size */
+  position: absolute; /* Prevent button from moving out of the slider */
+  bottom: 15px; /* Position slightly above the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Align to center */
+}
 
-  .slider-arrow {
-    font-size: 20px; /* Further reduce arrow size */
-  }
+.slider-arrow {
+  font-size: 20px; /* Further reduce arrow size */
+}
 
-  .slider-controls {
-    bottom: 20px; /* Adjust position of controls */
-  }
+.slider-controls {
+  bottom: 20px; /* Adjust position of controls */
+}
 
-  .slider-dot {
-    height: 8px;
-    width: 8px; /* Smaller dots for phones */
-  }
+.slider-dot {
+  height: 8px;
+  width: 8px; /* Smaller dots for phones */
+}
 }
