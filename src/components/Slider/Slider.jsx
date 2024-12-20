@@ -35,10 +35,11 @@ const Slider = () => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
     }, 5000); // Change slide every 5 seconds
-
+    
+    console.log(currentSlide);
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
-
+  
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
   };
@@ -54,9 +55,9 @@ const Slider = () => {
           <div className="slide" key={index} style={{ backgroundImage: `url(${slide.image})` }}>
             <div className="overlay"></div>
             <div className="text-overlay" style={{ fontSize: currentSlide === 2 ? '20px' : '56px' }}>
-              <h1 className="slider-title">{slide.title}</h1>
-              <h1 className="slider-title">{slide.subtitle}</h1>
-              <h1 className="slider-title lifestyle">{slide.lifestyle}</h1>
+              <p className="slider-title">{slide.title}</p>
+              <p className="slider-title">{slide.subtitle}</p>
+              <p className="slider-title lifestyle">{slide.lifestyle}</p>
               <p className="slider-description">{slide.description}</p>
               <button className="slider-button">Shop Now ➔</button>
             </div>
