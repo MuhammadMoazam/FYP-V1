@@ -10,6 +10,9 @@ import WhyChooseUs from 'components/WhyChooseUs/WhyChooseUs'
 import Products from 'components/Products/Products'
 import DealOfTheDay from 'components/DealOfTheDay/DealOfTheDay'
 import HowToAvailOffers from 'components/HowToAvailOffers/HowToAvailOffers'
+import MissionComponent from 'components/MissionComponent/MissionComponent'
+import Testimonial from 'components/Testimonial/Testimonial'
+import LatestArticles from 'components/LatestArticles/LatestArticles'
 
 const Home = () => {
   return (
@@ -22,6 +25,9 @@ const Home = () => {
       <Products/>
       <DealOfTheDay></DealOfTheDay>
       <HowToAvailOffers></HowToAvailOffers>
+      <MissionComponent></MissionComponent>
+      <Testimonial></Testimonial>
+      <LatestArticles></LatestArticles>
       <Banner />
       <Footer />
     </div>
