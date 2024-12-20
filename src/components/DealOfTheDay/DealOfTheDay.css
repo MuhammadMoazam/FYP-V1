@@ -1,13 +1,13 @@
 /* Container styling */
 .deal-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-margin: 10%;
-    padding-left: 0%;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem; /* Replace margin: 10% with padding for consistent spacing */
+  box-sizing: border-box; /* Ensures padding doesn’t break layout */
+  min-height: 100vh; /* Change height: 100vh to min-height */
+  margin-bottom: 4rem; /* Add space between this component and the next one */
+}
   .deal-wrapper {
     display: flex;
     max-width: 1000px;
@@ -32,7 +32,7 @@ margin: 10%;
   /* Content Section */
   .content-section {
     flex: 1;
-    background-color: #1d2f6f; /* Blue background */
+    background-color: #1d2f6f;
     color: #ffffff;
     padding: 50px;
     display: flex;
@@ -41,7 +41,8 @@ margin: 10%;
     margin-top: 15%;
 
     height: 40%;
-  }
+  
+}
   
   .deal-title {
     font-size: 28px;
