@@ -32,7 +32,8 @@
   
   .articles-container {
     display: flex;
-    gap: 30px;
+    padding-left: 9%;
+    gap: 40px;
   }
   
   .article-card {

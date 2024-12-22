@@ -5,12 +5,13 @@ import "./LatestArticles.css";
 import image1 from 'Assets/Articles/article1.jpg'
 import image3 from 'Assets/Articles/article3.jpg'
 import image2 from 'Assets/Articles/article2.jpg'
+import { Link } from "react-router-dom";
 
 const articles = [
   {
     image: image1,
     title: "Discover UrbanClothe’s Winter...",
-    readTime: null,
+    readTime: "5 minutes of reading",
   },
   {
     image: image2,
@@ -29,7 +30,7 @@ const LatestArticles = () => {
     <div className="latest-articles">
       <div className="header">
         <h2>Our Latest articles and news</h2>
-        <a href="/all-articles" className="read-all">Read All Articles →</a>
+        <Link to="/all-articles" className="read-all">Read All Articles →</Link>
       </div>
       <div className="articles-container">
         {articles.map((article, index) => (
