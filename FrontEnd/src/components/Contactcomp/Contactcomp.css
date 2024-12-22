@@ -63,9 +63,10 @@
 
 .card h3 {
     font-size: 1.25rem;
-    color: rgb(46, 46, 46);
+    color: rgb(216, 216, 216);
     font-weight: bold;
-    margin: 10px 0;
+    margin: 15px 0;
+    padding-left: 10px;
 }
 
 .card p {

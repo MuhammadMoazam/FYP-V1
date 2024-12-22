@@ -38,7 +38,7 @@ const Slider = () => {
     
     console.log(currentSlide);
     return () => clearInterval(interval); // Cleanup interval on unmount
-  }, []);
+  }, [currentSlide]);
   
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);

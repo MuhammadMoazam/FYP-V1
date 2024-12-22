@@ -1,15 +1,16 @@
 import React from "react";
 import Card from "../Card/Card";
 import "./CardsList.css";
+import image from '../../Assets/Articles/article1.jpg'
 
 const cardsData = [
     {
-        imageUrl: "https://via.placeholder.com/300x200", // Replace with actual image URL
+        imageUrl: {image}, // Replace with actual image URL
         readingTime: 3,
         title: "Discover UrbanClothe’s Winter...",
     },
     {
-        imageUrl: "https://via.placeholder.com/300x200",
+        imageUrl: "../../Assets/Articles/article1.jpg",
         readingTime: 3,
         title: "This is a Sample Post with a...",
     },
@@ -27,7 +28,7 @@ function CardsList()
             {cardsData.map((card, index) => (
                 <Card
                     key={index}
-                    imageUrl={card.imageUrl}
+                    imageUrl={image}
                     readingTime={card.readingTime}
                     title={card.title}
                 />

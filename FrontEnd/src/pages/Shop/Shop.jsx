@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import Banner from "../../components/Lower_Banner/Lower_Banner";
 import TImage from "../../components/TImage/TImage";
 import Sidebar from "../../components/SideBar/Sidebar"; // Adjusted path for Sidebar
-import ProductCard from "components/ShopProducts/ProductCard";
+// import ProductCard from "components/ShopProducts/ProductCard";
 import image1 from 'Assets/Product Categories/Womens-Collection.png'
 import "./Shop.css";
 
