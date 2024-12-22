@@ -74,15 +74,15 @@
   position: relative;
    bottom: 1%; 
   left: 10%; /* Align with the reference spacing */
-  
+  margin-top: -30px;
   width: 60%; /* Match the testimonial box width */
   background: linear-gradient(to left, #243673, #121469);
-    background-color: #243673;
+  background-color: #243673;
   color:#fff; /* White text color */
-  padding: 1rem 1.5rem; /* Add internal spacing for text */
+  padding: 1rem 1rem; /* Add internal spacing for text */
   border-radius: 9px; /* Rounded corners for the box */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-  font-size: 0.95rem; /* Adjust font size to match reference */
+  font-size: 0.90rem; /* Adjust font size to match reference */
 }
 
 .testimonial strong {
