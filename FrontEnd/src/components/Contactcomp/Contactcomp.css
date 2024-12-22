@@ -56,13 +56,14 @@
 }
 
 .icon {
-    font-size: 2rem;
+    font-size: 3rem;
     color: #3b82f6;
     margin-bottom: 10px;
 }
 
 .card h3 {
     font-size: 1.25rem;
+    color: rgb(46, 46, 46);
     font-weight: bold;
     margin: 10px 0;
 }
