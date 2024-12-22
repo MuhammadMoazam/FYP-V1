@@ -10,8 +10,10 @@ body {
 }
 
 .promise-section {
+  margin-top: 30px;
   display: flex;
   align-items: center;
+  height: 500px;
   justify-content: space-between;
   background-color: #3d5afe; /* Blue background for content */
   color: #fff;
@@ -19,6 +21,8 @@ body {
   overflow: hidden;
   padding: 40px 10%;
   margin-left: 5%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 .promise-image {
@@ -84,7 +88,7 @@ body {
 @media (max-width: 1024px) {
   .promise-section {
     flex-direction: column;
-    padding: 20px;
+    padding: 0px;
   }
 
   .promise-image {
@@ -94,7 +98,7 @@ body {
     transform: none;
     margin-bottom: 20px;
     width: 100%; /* Make image take full width on small screens */
-    height: 250px; /* Adjust height on small screens */
+    height: 350px; /* Adjust height on small screens */
   }
 
   .promise-content {

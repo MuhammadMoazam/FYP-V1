@@ -9,10 +9,11 @@
 /*  */
 /* General Section Styling */
 .testimonial-section {
+  margin-top: 40px;
     padding-top: 60px;
     padding-bottom: 60px ;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 120px;
+    padding-right: 120px;
   background-color: #ffffff;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -91,7 +92,17 @@
   .logo-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+    .testimonial-section{
+      padding: 10px;
+    }
 }
+@media (max-width: 1024px) {
+  
+    .testimonial-section{
+      padding: 20px;
+    }
+}
+
 
 /* Responsive Design: 1 Column on Small Screens */
 @media (max-width: 480px) {
