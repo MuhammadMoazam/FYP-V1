@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import Banner from '../../components/Lower_Banner/Lower_Banner'
 import TImage from '../../components/TImage/TImage'
-import CardsList from 'components/CardsList/CardsList'
+import CardsList from '../../components/CardsList/CardsList'
 const Blog = () => {
   return (
     <>

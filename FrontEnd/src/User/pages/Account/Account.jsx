@@ -1,8 +1,8 @@
-import Navbar from 'components/Navbar/Navbar'
+import Navbar from '../../components/Navbar/Navbar'
 import React, { useState } from 'react'
 
 import './Account.css'
-import Footer from 'components/Footer/Footer'
+import Footer from '../../components/Footer/Footer'
 import { AccountDetails, Addresses, Downloads, Orders } from './Components'
 
 function Account() {

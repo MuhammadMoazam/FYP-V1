@@ -1,7 +1,7 @@
 import React from 'react'
-import TImage from 'components/TImage/TImage'
-import Navbar from 'components/Navbar/Navbar'
-import Footer from 'components/Footer/Footer'
+import TImage from '../../components/TImage/TImage'
+import Navbar from '../../components/Navbar/Navbar'
+import Footer from '../../components/Footer/Footer'
 const Cart = () =>
 {
     return (
