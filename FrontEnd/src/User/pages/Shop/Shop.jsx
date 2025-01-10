@@ -1,86 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Banner from "../../components/Lower_Banner/Lower_Banner";
 import TImage from "../../components/TImage/TImage";
-import Sidebar from "../../components/SideBar/Sidebar"; // Adjusted path for Sidebar
-// import ProductCard from "components/ShopProducts/ProductCard";
-import image1 from '../../Assets/Product Categories/Womens-Collection.png'
+import Sidebar from "../../components/SideBar/Sidebar";
 import "./Shop.css";
 
-const products = [
-  {
-    id: 1,
-    image: image1,
-    title: "Plus Size Lightweight Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 2,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 3,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 4,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 5,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 6,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 7,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 8,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  {
-    id: 9,
-    image: image1,
-    title: "Premium Rabbit Wool Jersey",
-    oldPrice: "Rs4,500.00",
-    newPrice: "Rs4,000.00",
-  },
-  // Add more products as needed
-];
 const Shop = () => {
-  const [sortOption, setSortOption] = useState("default");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleSortChange = (e) => {
-    setSortOption(e.target.value);
-    // Sorting logic will be implemented later when backend is added
-  };
+  // Fetch products from the backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/getproducts"); // Backend endpoint
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) return <div>Loading products...</div>;
+  if (error) return <div>Error fetching products: {error}</div>;
 
   return (
     <>
@@ -98,28 +50,21 @@ const Shop = () => {
         <div className="shop-content">
           {/* Shop Header */}
           <div className="shop-header">
-            <div className="results-count">Showing 1–12 of 19 results</div>
-            <div className="sort-container">
-              <label htmlFor="sort">Sort By:</label>
-              <select id="sort" value={sortOption} onChange={handleSortChange}>
-                <option value="default">Default</option>
-                <option value="priceLowHigh">Price: Low to High</option>
-                <option value="priceHighLow">Price: High to Low</option>
-                <option value="latest">Latest</option>
-              </select>
+            <div className="results-count">
+              Showing {products.length} products
             </div>
           </div>
 
           {/* Product Grid */}
           <div className="product-grid">
             {products.map((product) => (
-              <div key={product.id} className="product-card">
+              <div key={product._id} className="product-card">
                 <span className="discount-badge">{product.discount}</span>
-                <img src={product.image} alt={product.title} />
-                <h3>{product.title}</h3>
+                <img src={product.imgSrc} alt={product.name} />
+                <h3>{product.name}</h3>
                 <p>
-                  <span className="old-price">{product.oldPrice}</span>
-                  <span className="new-price">{product.newPrice}</span>
+                  <span className="old-price">{product.originalPrice}</span>
+                  <span className="new-price">{product.discountedPrice}</span>
                 </p>
               </div>
             ))}
