@@ -4,11 +4,47 @@ import './Login.css'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 
+import useApi from '../../../components/Contexts/API/useApi'
+import useUser from '../../../components/Contexts/User/useUser'
 
 const Login = () => {
 
+    const { authenticateUser, registerUser } = useApi()
+    const { login } = useUser()
+
     const [loginOrRegister, setLoginOrRegister] = useState(true)
+    const [emailInput, setEmailInput] = useState('')
+    const [passwordInput, setPasswordInput] = useState('')
     const [rememberMe, setRememberMe] = useState(false)
+
+
+    async function submit(e) {
+        e.preventDefault()
+
+        try {
+            let response;
+            if (loginOrRegister) {
+                response = await authenticateUser(emailInput, passwordInput)
+                if (response.message === 'unauthorized') {
+                    alert('Invalid username or password')
+                    return
+                }
+            } else {
+                response = await registerUser(emailInput, passwordInput)
+                if (response.message === 'conflict') {
+                    alert('Email already exists')
+                    return
+                }
+            }
+
+            if (response) {
+                login(response)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
     return (
         <div>
@@ -38,17 +74,19 @@ const Login = () => {
                     </div>
                 </div>
 
-                <h2> {loginOrRegister ? 'Login' : 'Register'} </h2>
+                <br />
+
+                <h1> {loginOrRegister ? 'Login' : 'Register'} </h1>
 
                 <div className='form-container'>
-                    <form className='form'>
+                    <form className='form' onSubmit={(e) => submit(e)}>
                         <div className='input-container'>
                             <label className='heading-1-style'> {loginOrRegister ? 'Username or email address' : 'Email address'} <label style={{ color: 'red' }}>*</label></label>
-                            <input type={loginOrRegister ? 'text' : 'email'} className='input-style' />
+                            <input type={loginOrRegister ? 'text' : 'email'} value={emailInput} onChange={(e) => setEmailInput(e.target.value)} className='input-style' />
                         </div>
                         <div className='input-container'>
                             <label className='heading-1-style'>Password <label style={{ color: 'red' }}>*</label></label>
-                            <input type='password' className='input-style' />
+                            <input type='password' value={passwordInput} onChange={(e) => setPasswordInput(e.target.value)} className='input-style' />
                         </div>
                         {
                             loginOrRegister ? (
@@ -62,7 +100,7 @@ const Login = () => {
                                 </div>
                             ) : (
                                 <div style={{ width: '100%', maxWidth: '500px' }}>
-                                    <label className='heading-2-style' style={{ width: '10px' }}>
+                                    <label className='heading-2-style' >
                                         Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a rel="stylesheet" href="/privacy-policy" style={{ color: '#3b4fe4', textDecoration: 'none' }}>privacy policy</a>.
                                     </label>
                                 </div>

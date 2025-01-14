@@ -5,12 +5,16 @@ import 'core-js'
 
 import App from './App'
 import store from './store'
-
-
+import ApiContextProvider from './components/Contexts/API/APIContext'
+import UserContextProvider from './components/Contexts/User/UserContext'
 
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <App />
+    <UserContextProvider>
+      <ApiContextProvider>
+        <App />
+      </ApiContextProvider>
+    </UserContextProvider>
   </Provider>,
 );

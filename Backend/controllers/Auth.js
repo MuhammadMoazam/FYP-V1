@@ -5,19 +5,14 @@ const { generateOTP } = require("../utils/GenerateOtp");
 const Otp = require("../models/OTP");
 const { sanitizeUser } = require("../utils/SanitizeUser");
 const { generateToken } = require("../utils/GenerateToken");
-const PasswordResetToken = require("../models/PasswordResetToken");
 
 exports.signup = async (req, res) => {
   try {
-    console.log(req.body);
-
     const existingUser = await User.findOne({ email: req.body.email });
 
     // if user already exists
     if (existingUser) {
-      console.log("here");
-
-      return res.send({ message: "User already exists" });
+      return res.status(409).send({ message: "User already exists" });
     }
 
     // hashing the password
@@ -32,21 +27,12 @@ exports.signup = async (req, res) => {
     const secureInfo = sanitizeUser(createdUser);
 
     // generating jwt token
-    const token = generateToken(secureInfo);
+    const token = generateToken({ user: secureInfo._id });
 
-    // sending jwt token in the response cookies
-    res.cookie("token", token, {
-      sameSite: process.env.PRODUCTION === "true" ? "None" : "Lax",
-      maxAge: new Date(
-        Date.now() +
-          parseInt(process.env.COOKIE_EXPIRATION_DAYS * 24 * 60 * 60 * 1000)
-      ),
-      httpOnly: true,
-      secure: process.env.PRODUCTION === "true" ? true : false,
+    res.status(201).send({
+      user: secureInfo,
+      token: token,
     });
-
-
-    res.send(sanitizeUser(createdUser));
   } catch (error) {
     console.log(error);
     res.send({ message: "Error occured during signup, please try again later" });
@@ -57,34 +43,28 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     // checking if user exists or not
-    const existingUser = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({
+      $or: [
+        { userName: req.body.userName },
+        { email: req.body.userName },
+      ],
+    });
 
     // if exists and password matches the hash
     if (
-      existingUser &&
-      (await bcrypt.compare(req.body.password, existingUser.password))
+      user &&
+      (await bcrypt.compare(req.body.password, user.password))
     ) {
       // getting secure user info
-      const secureInfo = sanitizeUser(existingUser);
+      const secureInfo = sanitizeUser(user);
 
       // generating jwt token
-      const token = generateToken(secureInfo);
+      const token = generateToken({ user: secureInfo._id });
 
-      // sending jwt token in the response cookies
-      res.cookie("token", token, {
-        sameSite: process.env.PRODUCTION === "true" ? "None" : "Lax",
-        maxAge: new Date(
-          Date.now() +
-            parseInt(process.env.COOKIE_EXPIRATION_DAYS * 24 * 60 * 60 * 1000)
-        ),
-        httpOnly: true,
-        secure: process.env.PRODUCTION === "true" ? true : false,
-      });
-      return res.status(200).json(sanitizeUser(existingUser));
+      return res.status(200).json({ user: secureInfo, token });
     }
 
-    res.clearCookie("token");
-    return res.status(404).json({ message: "Invalid Credentails" });
+    return res.status(401).json({ message: "Invalid Credentials" });
   } catch (error) {
     console.log(error);
     res
@@ -196,40 +176,40 @@ exports.forgotPassword = async (req, res) => {
         .json({ message: "Provided email does not exists" });
     }
 
-    await PasswordResetToken.deleteMany({ user: isExistingUser._id });
+    // await PasswordResetToken.deleteMany({ user: isExistingUser._id });
 
-    // if user exists , generates a password reset token
-    const passwordResetToken = generateToken(
-      sanitizeUser(isExistingUser),
-      true
-    );
+    // // if user exists , generates a password reset token
+    // const passwordResetToken = generateToken(
+    //   sanitizeUser(isExistingUser),
+    //   true
+    // );
 
-    // hashes the token
-    const hashedToken = await bcrypt.hash(passwordResetToken, 10);
+    // // hashes the token
+    // const hashedToken = await bcrypt.hash(passwordResetToken, 10);
 
-    // saves hashed token in passwordResetToken collection
-    newToken = new PasswordResetToken({
-      user: isExistingUser._id,
-      token: hashedToken,
-      expiresAt: Date.now() + parseInt(process.env.OTP_EXPIRATION_TIME),
-    });
-    await newToken.save();
+    // // saves hashed token in passwordResetToken collection
+    // newToken = new PasswordResetToken({
+    //   user: isExistingUser._id,
+    //   token: hashedToken,
+    //   expiresAt: Date.now() + parseInt(process.env.OTP_EXPIRATION_TIME),
+    // });
+    // await newToken.save();
 
     // sends the password reset link to the user's mail
-    await sendMail(
-      isExistingUser.email,
-      "Password Reset Link for Your MERN-AUTH-REDUX-TOOLKIT Account",
-      `<p>Dear ${isExistingUser.name},
+    // await sendMail(
+    //   isExistingUser.email,
+    //   "Password Reset Link for Your MERN-AUTH-REDUX-TOOLKIT Account",
+    //   `<p>Dear ${isExistingUser.name},
 
-        We received a request to reset the password for your MERN-AUTH-REDUX-TOOLKIT account. If you initiated this request, please use the following link to reset your password:</p>
-        
-        <p><a href=${process.env.ORIGIN}/reset-password/${isExistingUser._id}/${passwordResetToken} target="_blank">Reset Password</a></p>
-        
-        <p>This link is valid for a limited time. If you did not request a password reset, please ignore this email. Your account security is important to us.
-        
-        Thank you,
-        The MERN-AUTH-REDUX-TOOLKIT Team</p>`
-    );
+    //     We received a request to reset the password for your MERN-AUTH-REDUX-TOOLKIT account. If you initiated this request, please use the following link to reset your password:</p>
+
+    //     <p><a href=${process.env.ORIGIN}/reset-password/${isExistingUser._id}/${passwordResetToken} target="_blank">Reset Password</a></p>
+
+    //     <p>This link is valid for a limited time. If you did not request a password reset, please ignore this email. Your account security is important to us.
+
+    //     Thank you,
+    //     The MERN-AUTH-REDUX-TOOLKIT Team</p>`
+    // );
 
     res
       .status(200)
@@ -253,9 +233,9 @@ exports.resetPassword = async (req, res) => {
     }
 
     // fetches the resetPassword token by the userId
-    const isResetTokenExisting = await PasswordResetToken.findOne({
-      user: isExistingUser._id,
-    });
+    // const isResetTokenExisting = await PasswordResetToken.findOne({
+    //   user: isExistingUser._id,
+    // });
 
     // If token does not exists for that userid, then returns a 404 response
     if (!isResetTokenExisting) {
@@ -263,26 +243,26 @@ exports.resetPassword = async (req, res) => {
     }
 
     // if the token has expired then deletes the token, and send response accordingly
-    if (isResetTokenExisting.expiresAt < new Date()) {
-      await PasswordResetToken.findByIdAndDelete(isResetTokenExisting._id);
-      return res.status(404).json({ message: "Reset Link has been expired" });
-    }
+    // if (isResetTokenExisting.expiresAt < new Date()) {
+    //   await PasswordResetToken.findByIdAndDelete(isResetTokenExisting._id);
+    //   return res.status(404).json({ message: "Reset Link has been expired" });
+    // }
 
     // if token exists and is not expired and token matches the hash, then resets the user password and deletes the token
-    if (
-      isResetTokenExisting &&
-      isResetTokenExisting.expiresAt > new Date() &&
-      (await bcrypt.compare(req.body.token, isResetTokenExisting.token))
-    ) {
-      // deleting the password reset token
-      await PasswordResetToken.findByIdAndDelete(isResetTokenExisting._id);
+    // if (
+    //   isResetTokenExisting &&
+    //   isResetTokenExisting.expiresAt > new Date() &&
+    //   (await bcrypt.compare(req.body.token, isResetTokenExisting.token))
+    // ) {
+    //   // deleting the password reset token
+    //   await PasswordResetToken.findByIdAndDelete(isResetTokenExisting._id);
 
-      // resets the password after hashing it
-      await User.findByIdAndUpdate(isExistingUser._id, {
-        password: await bcrypt.hash(req.body.password, 10),
-      });
-      return res.status(200).json({ message: "Password Updated Successfuly" });
-    }
+    //   // resets the password after hashing it
+    //   await User.findByIdAndUpdate(isExistingUser._id, {
+    //     password: await bcrypt.hash(req.body.password, 10),
+    //   });
+    //   return res.status(200).json({ message: "Password Updated Successfuly" });
+    // }
 
     return res.status(404).json({ message: "Reset Link has been expired" });
   } catch (error) {
@@ -293,32 +273,5 @@ exports.resetPassword = async (req, res) => {
         message:
           "Error occured while resetting the password, please try again later",
       });
-  }
-};
-
-exports.logout = async (req, res) => {
-  try {
-    res.cookie("token", {
-      maxAge: 0,
-      sameSite: process.env.PRODUCTION === "true" ? "None" : "Lax",
-      httpOnly: true,
-      secure: process.env.PRODUCTION === "true" ? true : false,
-    });
-    res.status(200).json({ message: "Logout successful" });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-exports.checkAuth = async (req, res) => {
-  try {
-    if (req.user) {
-      const user = await User.findById(req.user._id);
-      return res.status(200).json(sanitizeUser(user));
-    }
-    res.sendStatus(401);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
   }
 };
