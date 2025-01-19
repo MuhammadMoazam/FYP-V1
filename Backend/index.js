@@ -6,6 +6,7 @@ const authController = require("./controllers/Auth")
 const productRoutes = require("./routes/product"); // Adjust path as needed
 const { verifyToken } = require("./middleware/VerifyToken");
 const { getUserData, updateUser } = require("./controllers/User");
+const morgan = require("morgan");
 
 const app = express();
 
@@ -13,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
-
+app.use(morgan('dev'))
 // Connect to DB
 connectToDB();
 

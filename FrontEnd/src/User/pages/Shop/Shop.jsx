@@ -15,7 +15,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/getproducts"); // Backend endpoint
+        const response = await fetch("http://localhost:5000/api/products"); // Backend endpoint
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
