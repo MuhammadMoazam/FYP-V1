@@ -7,5 +7,4 @@ router
     .get("/user/:id",addressController.getByUserId)
     .patch('/:id',addressController.updateById)
     .delete('/:id',addressController.deleteById)
-
 module.exports=router
