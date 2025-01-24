@@ -1,0 +1,42 @@
+.product-detail-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.product-detail-title {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.product-detail-img {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
+}
+
+.product-detail-description {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.product-detail-price {
+    font-size: 24px;
+    color: #333;
+}
+
+.original-price {
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.discounted-price {
+    color: #e60000;
+    font-weight: bold;
+}
+
+.product-detail-extra-info {
+    font-size: 16px;
+    color: #777;
+}

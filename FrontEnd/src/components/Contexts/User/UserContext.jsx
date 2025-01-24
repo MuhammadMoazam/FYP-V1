@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export const UserContext = createContext(undefined);
@@ -44,5 +43,6 @@ const UserContextProvider = ({ children }) => {
         </UserContext.Provider>
     );
 };
+
 
 export default UserContextProvider;

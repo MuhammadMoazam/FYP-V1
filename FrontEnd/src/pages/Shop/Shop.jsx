@@ -1,0 +1,95 @@
+import React, { useState, useEffect } from "react";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
+import Banner from "../../components/Lower_Banner/Lower_Banner";
+import TImage from "../../components/TImage/TImage";
+import Sidebar from "../../components/SideBar/Sidebar"; // Adjusted path for Sidebar
+// import ProductCard from "components/ShopProducts/ProductCard";
+import "./Shop.css";
+
+const Shop = () => {
+  const [sortOption, setSortOption] = useState("default");
+
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+    // Sorting logic will be implemented later when backend is added
+  };
+
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Fetch products from the backend
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const response = await fetch("http://localhost:5000/api/products"); // Backend endpoint
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+          }
+          const data = await response.json();
+          setProducts(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchProducts();
+    }, []);
+
+    if (loading) return <div>Loading products...</div>;
+    if (error) return <div>Error fetching products: {error}</div>;
+
+  return (
+    <>
+      <Navbar />
+      <TImage
+        title="Shop"
+        description="Browse our trendy collections and shop the latest in fashion styles."
+      />
+      <div className="breadcrumb">
+        <a href="/">Home</a> &gt; <span>Shop</span>
+      </div>
+
+      <div className="shop-container">
+        <Sidebar />
+        <div className="shop-content">
+          {/* Shop Header */}
+          <div className="shop-header">
+            <div className="results-count">Showing 1–12 of 19 results</div>
+            <div className="sort-container">
+              <label htmlFor="sort">Sort By:</label>
+              <select id="sort" value={sortOption} onChange={handleSortChange}>
+                <option value="default">Default</option>
+                <option value="priceLowHigh">Price: Low to High</option>
+                <option value="priceHighLow">Price: High to Low</option>
+                <option value="latest">Latest</option>
+              </select>
+            </div>
+          </div>
+          {/* Product Grid */}
+          <div className="product-grid">
+            {products.map((product) => (
+              <div key={product._id} className="product-card">
+                <span className="discount-badge">{product.discount}</span>
+                <img src={product.imgSrc} alt={product.name} />
+                <h3>{product.name}</h3>
+                <p>
+                  <span className="old-price">{product.originalPrice}</span>
+                  <span className="new-price">{product.discountedPrice}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <Banner />
+      <Footer />
+    </>
+  );
+};
+
+export default Shop;
