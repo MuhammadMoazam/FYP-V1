@@ -1,7 +1,6 @@
 import React from "react";
-import { UserProvider } from "./components/Contexts/UserContext";
+import { UserProvider, useUser } from "./components/Contexts/UserContext";
 import { ApiProvider } from "./components/Contexts/API/APIContext";
-import useUser from "./components/Contexts/User/useUser.js";
 import useApi from "./components/Contexts/API/useApi.js";
 
 import "./index.css";
@@ -20,8 +19,14 @@ import Checkout from "./pages/Checkout/Checkout";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import Login from "./pages/login/Login";
 
-// Main app content component
-const AppContent = () => {
+// Helper Component to handle authentication logic
+const AccountChecker = () => {
+  const { loggedIn } = useUser();
+  return loggedIn ? <Account /> : <Login />;
+};
+
+// Routes component
+const AppRoutes = () => {
   const { checkForAuthentication } = useApi();
 
   React.useEffect(() => {
@@ -29,44 +34,43 @@ const AppContent = () => {
   }, [checkForAuthentication]);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/terms" element={<Term />} />
-        <Route path="/legal" element={<Legal />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route
-          exact
-          path="/account"
-          name="Account"
-          element={<AccountChecker />}
-        />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/terms" element={<Term />} />
+      <Route path="/legal" element={<Legal />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/account" element={<AccountChecker />} />
+      <Route 
+        path="/login" 
+        element={
+          <UserProvider>
+            <ApiProvider>
+              <Login />
+            </ApiProvider>
+          </UserProvider>
+        } 
+      />
+      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
+    </Routes>
   );
-};
-
-// Helper Component to handle authentication logic
-const AccountChecker = () => {
-  const { loggedIn } = useUser();
-  return loggedIn ? <Account /> : <Login />;
 };
 
 // Root App component
 const App = () => {
   return (
-    <UserProvider>
-      <ApiProvider>
-        <AppContent />
-      </ApiProvider>
-    </UserProvider>
+    <Router>
+      <UserProvider>
+        <ApiProvider>
+          <AppRoutes />
+        </ApiProvider>
+      </UserProvider>
+    </Router>
   );
 };
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./Login.css";
 
-import Navbar from "components/Navbar/Navbar";
-import Footer from "components/Footer/Footer";
-import useApi from "components/Contexts/API/useApi";
-import useUser from "components/Contexts/User/useUser";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
+import useApi from "../../components/Contexts/API/useApi";
+import { useUser } from "../../components/Contexts/UserContext";
 
 const Login = () => {
   const { authenticateUser, registerUser } = useApi();
