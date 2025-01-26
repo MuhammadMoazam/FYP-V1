@@ -9,6 +9,7 @@ const { verifyToken } = require("./middleware/VerifyToken");
 const { getUserData, updateUser } = require("./controllers/User");
 const morgan = require("morgan");
 const seedProducts = require("./seed/Product");
+const ordersRouter = require('./routes/orders');
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/api/signup", authController.signup);
 app.use("/api/signin", authController.login);
 app.use('/api/getUserData', verifyToken, getUserData);
 app.use('/api/updateUser', verifyToken, updateUser);
+app.use('/api/orders', ordersRouter);
 
 // Start Server
 const PORT = 5000;

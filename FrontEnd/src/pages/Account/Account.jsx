@@ -1,23 +1,51 @@
-import Navbar from "components/Navbar/Navbar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Account.css";
+import Navbar from "components/Navbar/Navbar";
 import Footer from "components/Footer/Footer";
 import { AccountDetails, Addresses, Downloads, Orders } from "./Components";
-import useUser from "components/Contexts/User/useUser";
+import { useUser } from "components/Contexts/UserContext";
 
 function Account() {
+    const navigate = useNavigate();
     const [selected, setSelected] = useState(0);
+    const { user, logout, loading } = useUser();
 
-    const { logout } = useUser()
+    useEffect(() => {
+        if (!loading && !user) {
+            navigate('/login');
+        }
+    }, [user, loading, navigate]);
+
+    const handleLogout = async () => {
+        const success = await logout();
+        if (success) {
+            navigate('/login');
+        }
+    };
+
+    if (loading) {
+        return (
+            <div>
+                <Navbar />
+                <div className="loading-container">
+                    <div className="loading-spinner">Loading...</div>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (!user) {
+        return null; // Will redirect in useEffect
+    }
 
     return (
         <div>
             <Navbar />
-
             <div className="account-page-container">
                 <div className="account-welcome-container">
-                    <h3>Welcome to your Account</h3>
-
+                    <h3>Welcome, {user.email}!</h3>
                     <p style={{ width: "90%" }}>
                         We're thrilled to have you here in your personal e-commerce haven.
                         This is your central hub for managing all things related to your
@@ -53,8 +81,8 @@ function Account() {
                         </li>
                         <br />
                         <li
-                            className={`account-logout-button`}
-                            onClick={logout}
+                            className="account-logout-button"
+                            onClick={handleLogout}
                         >
                             Logout
                         </li>
@@ -66,13 +94,10 @@ function Account() {
                         {selected === 2 && <Orders />}
                         {selected === 3 && <Downloads />}
                     </div>
-
                 </div>
-
             </div>
-
             <Footer />
-        </div >
+        </div>
     );
 }
 

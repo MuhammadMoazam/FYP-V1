@@ -1,71 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
-
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import useApi from "../../components/Contexts/API/useApi";
 import { useUser } from "../../components/Contexts/UserContext";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { authenticateUser, registerUser } = useApi();
-  const { login } = useUser();
+  const { login, loggedIn } = useUser();
 
-  const [loginOrRegister, setLoginOrRegister] = useState(true);
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  async function submit(e) {
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/account");
+    }
+  }, [loggedIn, navigate]);
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    // Confirm password validation for registration
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
+    }
+    setSubmitError("");
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError("");
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       let response;
-      if (loginOrRegister) {
-        response = await authenticateUser(emailInput, passwordInput);
+      if (isLogin) {
+        response = await authenticateUser(formData.email, formData.password);
         if (response.message === "unauthorized") {
-          alert("Invalid username or password");
+          setSubmitError("Invalid email or password");
           return;
         }
       } else {
-        response = await registerUser(emailInput, passwordInput);
+        response = await registerUser(formData.email, formData.password);
         if (response.message === "conflict") {
-          alert("Email already exists");
+          setSubmitError("Email already exists");
           return;
         }
       }
 
-      if (response) {
-        login(response);
+      if (response && response.token) {
+        const success = login(response);
+        if (success) {
+          navigate("/account");
+        } else {
+          setSubmitError("An error occurred during login");
+        }
+      } else {
+        setSubmitError("An unexpected error occurred");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Authentication error:", error);
+      setSubmitError(
+        error.response?.data?.message || 
+        "An error occurred. Please try again later."
+      );
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div>
       <Navbar />
-
       <div className="container">
         <div className="login-register">
           <div className="buttons-container">
-            <div
-              className={`selected-decoration ${
-                loginOrRegister ? "active" : ""
-              }`}
-            />
+            <div className={`selected-decoration ${isLogin ? "active" : ""}`} />
             <button
-              className={`button ${loginOrRegister ? "active" : ""}`}
+              className={`button ${isLogin ? "active" : ""}`}
               onClick={() => {
-                setLoginOrRegister(true);
+                setIsLogin(true);
+                setErrors({});
+                setSubmitError("");
               }}
             >
               Login
             </button>
             <button
-              className={`button ${!loginOrRegister ? "active" : ""}`}
+              className={`button ${!isLogin ? "active" : ""}`}
               onClick={() => {
-                setLoginOrRegister(false);
+                setIsLogin(false);
+                setErrors({});
+                setSubmitError("");
               }}
             >
               Register
@@ -73,88 +147,102 @@ const Login = () => {
           </div>
         </div>
 
-        <br />
+        <h1>{isLogin ? "Login" : "Register"}</h1>
 
-        <h1> {loginOrRegister ? "Login" : "Register"} </h1>
+        {submitError && (
+          <div className="error-message">
+            {submitError}
+          </div>
+        )}
 
         <div className="form-container">
-          <form className="form" onSubmit={(e) => submit(e)}>
+          <form className="form" onSubmit={handleSubmit}>
             <div className="input-container">
               <label className="heading-1-style">
-                {" "}
-                {loginOrRegister
-                  ? "Username or email address"
-                  : "Email address"}{" "}
-                <label style={{ color: "red" }}>*</label>
+                Email address <span className="required">*</span>
               </label>
               <input
-                type={loginOrRegister ? "text" : "email"}
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                className="input-style"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className={`input-style ${errors.email ? "error" : ""}`}
+                disabled={isLoading}
               />
+              {errors.email && (
+                <span className="error-text">{errors.email}</span>
+              )}
             </div>
+
             <div className="input-container">
               <label className="heading-1-style">
-                Password <label style={{ color: "red" }}>*</label>
+                Password <span className="required">*</span>
               </label>
               <input
                 type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                className="input-style"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className={`input-style ${errors.password ? "error" : ""}`}
+                disabled={isLoading}
               />
+              {errors.password && (
+                <span className="error-text">{errors.password}</span>
+              )}
             </div>
-            {loginOrRegister ? (
-              <div className="checkbox-container">
-                <label
-                  className="heading-2-style"
-                  style={{ fontSize: "12px", color: "#3b4fe4" }}
-                >
-                  {" "}
-                  Forgot Your Password?{" "}
-                </label>
 
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}
-                  />
-                  <label
-                    className="heading-1-style"
-                    style={{ fontSize: "15px" }}
-                  >
-                    Remember me
-                  </label>
-                </div>
-              </div>
-            ) : (
-              <div style={{ width: "100%", maxWidth: "500px" }}>
-                <label className="heading-2-style">
-                  Your personal data will be used to support your experience
-                  throughout this website, to manage access to your account, and
-                  for other purposes described in our{" "}
-                  <a
-                    rel="stylesheet"
-                    href="/privacy-policy"
-                    style={{ color: "#3b4fe4", textDecoration: "none" }}
-                  >
-                    privacy policy
-                  </a>
-                  .
+            {!isLogin && (
+              <div className="input-container">
+                <label className="heading-1-style">
+                  Confirm Password <span className="required">*</span>
                 </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className={`input-style ${errors.confirmPassword ? "error" : ""}`}
+                  disabled={isLoading}
+                />
+                {errors.confirmPassword && (
+                  <span className="error-text">{errors.confirmPassword}</span>
+                )}
               </div>
             )}
-            <button type="submit" className="submit-button">
-              {" "}
-              {loginOrRegister ? "Login" : "Register"}{" "}
+
+            {isLogin && (
+              <div className="remember-me">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  disabled={isLoading}
+                />
+                <label htmlFor="rememberMe">Remember me</label>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                "Please wait..."
+              ) : (
+                isLogin ? "Login" : "Register"
+              )}
             </button>
+
+            {isLogin && (
+              <div className="forgot-password">
+                <a href="/forgot-password">Forgot your password?</a>
+              </div>
+            )}
           </form>
         </div>
       </div>
-
       <Footer />
     </div>
   );

@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import { useCart } from "../Contexts/Cart/CartContext";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -40,7 +43,6 @@ const ProductDetail = () => {
       } catch (error) {
         console.error("Error fetching product details:", error);
         setError(error.message);
-        // Redirect to shop page after 3 seconds if product not found
         if (error.message.includes('404')) {
           setTimeout(() => {
             navigate('/shop');
@@ -87,26 +89,19 @@ const ProductDetail = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/cart/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: id,
-          quantity: quantity,
-        }),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add item to cart");
+      setAddingToCart(true);
+      const result = await addToCart(product, quantity);
+      
+      if (result.success) {
+        // Show success message or notification
+        navigate('/cart');
+      } else {
+        setError(result.message || "Failed to add item to cart");
       }
-
-      navigate("/cart");
     } catch (error) {
-      console.error("Error adding to cart:", error);
-      setError("Failed to add item to cart. Please try again.");
+      setError(error.message);
+    } finally {
+      setAddingToCart(false);
     }
   };
 
@@ -114,7 +109,7 @@ const ProductDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="loading">Loading product details...</div>
+        <div className="loading">Loading...</div>
         <Footer />
       </>
     );
@@ -124,13 +119,7 @@ const ProductDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="error">
-          <h2>Error</h2>
-          <p>{error}</p>
-          {error.includes('404') && (
-            <p>Redirecting to shop page in 3 seconds...</p>
-          )}
-        </div>
+        <div className="error">{error}</div>
         <Footer />
       </>
     );
@@ -140,10 +129,7 @@ const ProductDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="not-found">
-          <h2>Product Not Found</h2>
-          <p>Redirecting to shop page in 3 seconds...</p>
-        </div>
+        <div className="error">Product not found</div>
         <Footer />
       </>
     );
@@ -214,10 +200,11 @@ const ProductDetail = () => {
             <button
               className="add-to-cart-btn"
               onClick={handleAddToCart}
-              disabled={product.stock === 0}
+              disabled={product.stock === 0 || addingToCart}
             >
-              {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+              {addingToCart ? "Adding to Cart..." : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
             </button>
+            {error && <p className="error-message">{error}</p>}
           </div>
         </div>
       </div>
