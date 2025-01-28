@@ -1,5 +1,5 @@
 import React from "react";
-import { UserProvider, useUser } from "./components/Contexts/UserContext";
+import { UserProvider, useUser } from "./components/Contexts/User/UserContext";
 import { ApiProvider } from "./components/Contexts/API/APIContext";
 import { CartProvider } from "./components/Contexts/Cart/CartContext";
 import useApi from "./components/Contexts/API/useApi.js";
@@ -19,6 +19,7 @@ import Wishlist from "./pages/Wishlist/Wishlist";
 import Checkout from "./pages/Checkout/Checkout";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import Login from "./pages/login/Login";
+import VerifyOTP from "./pages/VerifyOTP/VerifyOTP";
 
 // Helper Component to handle authentication logic
 const AccountChecker = () => {
@@ -56,6 +57,7 @@ const AppRoutes = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/account" element={<AccountChecker />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/product/:id" element={<ProductDetail />} />

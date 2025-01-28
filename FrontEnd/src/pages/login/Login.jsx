@@ -4,12 +4,14 @@ import "./Login.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import useApi from "../../components/Contexts/API/useApi";
-import { useUser } from "../../components/Contexts/UserContext";
+import { useUser } from "../../components/Contexts/User/UserContext";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 const Login = () => {
   const navigate = useNavigate();
   const { authenticateUser, registerUser } = useApi();
-  const { login, loggedIn } = useUser();
+  const { loggedIn } = useUser();
 
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -30,7 +32,7 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     // Email validation
     if (!formData.email) {
       newErrors.email = "Email is required";
@@ -82,6 +84,7 @@ const Login = () => {
 
     try {
       let response;
+
       if (isLogin) {
         response = await authenticateUser(formData.email, formData.password);
         if (response.message === "unauthorized") {
@@ -96,24 +99,23 @@ const Login = () => {
         }
       }
 
-      if (response && response.token) {
-        const success = login(response);
-        if (success) {
-          navigate("/account");
-        } else {
-          setSubmitError("An error occurred during login");
-        }
+      if (response && response.email) {
+        navigate("/verify-otp", { state: { email: response.email } });
       } else {
         setSubmitError("An unexpected error occurred");
       }
     } catch (error) {
       console.error("Authentication error:", error);
       setSubmitError(
-        error.response?.data?.message || 
+        error.response?.data?.message ||
         "An error occurred. Please try again later."
       );
     } finally {
       setIsLoading(false);
+      // hide error message after 2 seconds
+      setTimeout(() => {
+        setSubmitError("");
+      }, 2000);
     }
   };
 
@@ -123,7 +125,7 @@ const Login = () => {
       <div className="container">
         <div className="login-register">
           <div className="buttons-container">
-            <div className={`selected-decoration ${isLogin ? "active" : ""}`} />
+            <div className={`selected-decoration ${isLogin ? "" : "active"}`} />
             <button
               className={`button ${isLogin ? "active" : ""}`}
               onClick={() => {
@@ -147,7 +149,7 @@ const Login = () => {
           </div>
         </div>
 
-        <h1>{isLogin ? "Login" : "Register"}</h1>
+        <h1> {isLogin ? "Login" : "Register"}</h1>
 
         {submitError && (
           <div className="error-message">
@@ -211,6 +213,13 @@ const Login = () => {
             )}
 
             {isLogin && (
+              <div className="forgot-password">
+                <a href="/forgot-password">Forgot your password?</a>
+              </div>
+            )}
+
+
+            {isLogin && (
               <div className="remember-me">
                 <input
                   type="checkbox"
@@ -228,18 +237,17 @@ const Login = () => {
               className="submit-button"
               disabled={isLoading}
             >
-              {isLoading ? (
-                "Please wait..."
-              ) : (
+              {isLoading ? (<ClipLoader
+                color={'white'}
+                loading={isLoading}
+                size={30}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />) : (
                 isLogin ? "Login" : "Register"
               )}
             </button>
 
-            {isLogin && (
-              <div className="forgot-password">
-                <a href="/forgot-password">Forgot your password?</a>
-              </div>
-            )}
           </form>
         </div>
       </div>
