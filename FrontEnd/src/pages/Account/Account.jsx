@@ -4,7 +4,7 @@ import "./Account.css";
 import Navbar from "components/Navbar/Navbar";
 import Footer from "components/Footer/Footer";
 import { AccountDetails, Addresses, Downloads, Orders } from "./Components";
-import { useUser } from "components/Contexts/UserContext";
+import { useUser } from "components/Contexts/User/UserContext";
 
 function Account() {
     const navigate = useNavigate();
