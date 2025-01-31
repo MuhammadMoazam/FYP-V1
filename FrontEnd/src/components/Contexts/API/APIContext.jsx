@@ -79,6 +79,36 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
+    const resendOTP = async (email) => {
+        try {
+            const response = await axios.post(`${serverURL}/api/resendOTP`, { email })
+            if (response.status === 200) {
+                return true
+            }
+            return false
+        } catch (error) {
+            console.log("🚀 ------------------------------🚀")
+            console.log("🚀 ~ resendOTP ~ error:", error)
+            console.log("🚀 ------------------------------🚀")
+            return false
+        }
+    }
+
+    const verifyOTP = async (email, otp) => {
+        try {
+            const response = await axios.post(`${serverURL}/api/verifyOTP`, { email, otp })
+            if (response.status === 200) {
+                return response.data
+            }
+            return false
+        } catch (error) {
+            console.log("🚀 ------------------------------🚀")
+            console.log("🚀 ~ verifyOTP ~ error:", error)
+            console.log("🚀 ------------------------------🚀")
+            return false
+        }
+    }
+
     const updateUser = async ({ userName, names, passwords, email }) => {
         try {
             const token = Cookies.get('session')
@@ -121,6 +151,8 @@ const ApiContextProvider = ({ children }) => {
         forgotPassword,
         registerUser,
         authenticateUser,
+        resendOTP,
+        verifyOTP,
         checkForAuthentication,
         updateUser,
         //        logoutUser,

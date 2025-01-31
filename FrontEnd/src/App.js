@@ -10,6 +10,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 
 // Pages
 import Login from "./User/pages/login/Login";
+import VerifyOTP from "./User/pages/VerifyOTP/VerifyOTP.jsx";
 import Register from "./views/pages/register/Register";
 import Page404 from "./views/pages/page404/Page404";
 import Page500 from "./views/pages/page500/Page500";
@@ -63,6 +64,7 @@ const App = () => {
         <Route exact path="/home" name="Home" element={<Home />} />
         <Route exact path="/about" name="About" element={<About />} />
         <Route exact path="/account" name="Account" element={loggedIn ? <Account /> : <Login />} />
+        <Route exact path="/verify-otp" name="OTP Verification" element={<VerifyOTP />} />
         <Route exact path="/blog" name="Blog" element={<Blog />} />
         <Route exact path="/cart" name="Cart" element={<Cart />} />
         <Route exact path="/checkout" name="Checkout" element={<Checkout />} />

@@ -23,16 +23,14 @@ exports.signup = async (req, res) => {
     const createdUser = new User(req.body);
     await createdUser.save();
 
-    // getting secure user info
-    const secureInfo = sanitizeUser(createdUser);
+    // sending otp for verification
+    const otpSent = await sendOTP(createdUser.email);
 
-    // generating jwt token
-    const token = generateToken({ user: secureInfo._id });
+    if (!otpSent) {
+      return res.status(500).json({ message: "Error occured during signup, please try again later" });
+    }
 
-    res.status(201).send({
-      user: secureInfo,
-      token: token,
-    });
+    return res.status(200).json({ message: "OTP sent", email: createdUser.email });
   } catch (error) {
     console.log(error);
     res.send({ message: "Error occured during signup, please try again later" });
@@ -55,13 +53,9 @@ exports.login = async (req, res) => {
       user &&
       (await bcrypt.compare(req.body.password, user.password))
     ) {
-      // getting secure user info
-      const secureInfo = sanitizeUser(user);
+      await sendOTP(user.email);
 
-      // generating jwt token
-      const token = generateToken({ user: secureInfo._id });
-
-      return res.status(200).json({ user: secureInfo, token });
+      return res.status(200).json({ message: "OTP sent", email: user.email });
     }
 
     return res.status(401).json({ message: "Invalid Credentials" });
@@ -75,81 +69,44 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.verifyOtp = async (req, res) => {
+async function sendOTP(email) {
   try {
-    // checks if user id is existing in the user collection
-    const isValidUserId = await User.findById(req.body.userId);
-
-    // if user id does not exists then returns a 404 response
-    if (!isValidUserId) {
-      return res
-        .status(404)
-        .json({
-          message: "User not Found, for which the otp has been generated",
-        });
-    }
-
-    // checks if otp exists by that user id
-    const isOtpExisting = await Otp.findOne({ user: isValidUserId._id });
-
-    // if otp does not exists then returns a 404 response
-    if (!isOtpExisting) {
-      return res.status(404).json({ message: "Otp not found" });
-    }
-
-    // checks if the otp is expired, if yes then deletes the otp and returns response accordinly
-    if (isOtpExisting.expiresAt < new Date()) {
-      await Otp.findByIdAndDelete(isOtpExisting._id);
-      return res.status(400).json({ message: "Otp has been expired" });
-    }
-
-    // checks if otp is there and matches the hash value then updates the user verified status to true and returns the updated user
-    if (
-      isOtpExisting &&
-      (await bcrypt.compare(req.body.otp, isOtpExisting.otp))
-    ) {
-      await Otp.findByIdAndDelete(isOtpExisting._id);
-      const verifiedUser = await User.findByIdAndUpdate(
-        isValidUserId._id,
-        { isVerified: true },
-        { new: true }
-      );
-      return res.status(200).json(sanitizeUser(verifiedUser));
-    }
-
-    // in default case if none of the conidtion matches, then return this response
-    return res.status(400).json({ message: "Otp is invalid or expired" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Some Error occured" });
-  }
-};
-
-exports.resendOtp = async (req, res) => {
-  try {
-    const existingUser = await User.findById(req.body.user);
-
-    if (!existingUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    await Otp.deleteMany({ user: existingUser._id });
+    await Otp.deleteMany({ email });
 
     const otp = generateOTP();
     const hashedOtp = await bcrypt.hash(otp, 10);
 
     const newOtp = new Otp({
-      user: req.body.user,
+      email,
       otp: hashedOtp,
       expiresAt: Date.now() + parseInt(process.env.OTP_EXPIRATION_TIME),
     });
     await newOtp.save();
 
     await sendMail(
-      existingUser.email,
+      email,
       `OTP Verification for Your MERN-AUTH-REDUX-TOOLKIT Account`,
       `Your One-Time Password (OTP) for account verification is: <b>${otp}</b>.</br>Do not share this OTP with anyone for security reasons`
     );
+
+    return true;
+  } catch (error) {
+    console.log("🚀 ---------------------------🚀")
+    console.log("🚀 ~ sendOTP ~ error:", error)
+    console.log("🚀 ---------------------------🚀")
+    return false
+  }
+}
+
+exports.resendOtp = async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ email: req.body.email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await sendOTP(req.body.email);
 
     res.status(201).json({ message: "OTP sent" });
   } catch (error) {
@@ -160,6 +117,58 @@ exports.resendOtp = async (req, res) => {
           "Some error occured while resending otp, please try again later",
       });
     console.log(error);
+  }
+};
+
+exports.verifyOtp = async (req, res) => {
+  try {
+    // checks if user email is existing in the user collection
+    const user = await User.findOne({ email: req.body.email });
+
+    // if user email does not exists then returns a 404 response
+    if (!user) {
+      return res
+        .status(404)
+        .json({
+          message: "User not Found, for which the otp has been generated",
+        });
+    }
+
+    // checks if otp exists by that user email
+    const existingOTP = await Otp.findOne({ email: user.email });
+
+    // if otp does not exists then returns a 404 response
+    if (!existingOTP) {
+      return res.status(404).json({ message: "Otp not found" });
+    }
+
+    // checks if the otp is expired, if yes then deletes the otp and returns response accordinly
+    if (existingOTP.expiresAt < new Date()) {
+      await Otp.findByIdAndDelete(existingOTP._id);
+      return res.status(400).json({ message: "Otp has been expired" });
+    }
+
+    // checks if otp is there and matches the hash value then updates the user verified status to true and returns the updated user
+    if (
+      existingOTP &&
+      (await bcrypt.compare(req.body.otp, existingOTP.otp))
+    ) {
+      await Otp.findByIdAndDelete(existingOTP._id);
+
+      // getting secure user info
+      const secureInfo = sanitizeUser(user);
+
+      // generating jwt token
+      const token = generateToken({ user: secureInfo._id });
+
+      return res.status(200).json({ user: secureInfo, token });
+    }
+
+    // in default case if none of the conidtion matches, then return this response
+    return res.status(400).json({ message: "Otp is invalid or expired" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Some Error occured" });
   }
 };
 

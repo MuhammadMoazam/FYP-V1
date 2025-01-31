@@ -22,6 +22,8 @@ connectToDB();
 app.use("/api/products", productRoutes);
 app.use("/api/signup", authController.signup);
 app.use("/api/signin", authController.login);
+app.use("/api/resendOTP", authController.resendOtp);
+app.use("/api/verifyOTP", authController.verifyOtp);
 app.use('/api/getUserData', verifyToken, getUserData);
 app.use('/api/updateUser', verifyToken, updateUser);
 
