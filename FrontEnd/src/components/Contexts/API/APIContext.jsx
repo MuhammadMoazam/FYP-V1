@@ -1,49 +1,40 @@
 import React, { createContext, useContext } from 'react';
 import axios from 'axios';
-import useUser from '../User/useUser';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
-const serverURL = 'http://localhost:5000'
+const serverURL = 'http://localhost:5000';
 
 export const ApiContext = createContext(undefined);
 
-const ApiContextProvider = ({ children }) => {
-
-    const { login } = useUser()
+const ApiContextProvider = ({ children, user }) => {
 
     const forgotPassword = async (email) => {
         try {
-            const response = await axios.post(`${serverURL}/api/forgotPassword`, { email })
+            const response = await axios.post(`${serverURL}/api/forgotPassword`, { email });
             if (response.status === 200) {
-                return true
+                return true;
             }
-            return false
+            return false;
         } catch (error) {
-            console.log("🚀 ----------------------------------🚀")
-            console.log("🚀 ~ forgotPassword ~ error:", error)
-            console.log("🚀 ----------------------------------🚀")
-            return false
+            console.log("🚀 ----------------------------------🚀");
+            console.log("🚀 ~ forgotPassword ~ error:", error);
+            console.log("🚀 ----------------------------------🚀");
+            return false;
         }
-    }
+    };
 
     const registerUser = async (email, password) => {
         try {
             const response = await axios.post(`${serverURL}/api/signup`, {
                 email,
                 password,
-            })
-
-            return response.data
+            });
+            return response.data;
         } catch (error) {
-            if (error.response.status === 409) {
-                return { message: 'conflict' }
-            }
-            console.log("🚀 --------------------------------🚀")
-            console.log("🚀 ~ registerUser ~ error:", error)
-            console.log("🚀 --------------------------------🚀")
-            return { message: 'Server Error' };
+            console.error('Error registering user:', error);
+            throw error;
         }
-    }
+    };
 
     const authenticateUser = async (userName, password) => {
         try {
@@ -66,7 +57,7 @@ const ApiContextProvider = ({ children }) => {
             const token = Cookies.get('session')
             if (token) {
                 const apiResponse = await axios.get(`${serverURL}/api/getUserData`, { headers: { Authorization: token } })
-                login({ user: apiResponse.data, token })
+                return apiResponse.data
             };
         } catch (error) {
             if (error.response.status === 401) {
@@ -129,24 +120,6 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    // const logoutUser = async () => {
-    //     try {
-    //         const sessionToken = Cookies.get('session')
-    //         if (sessionToken == 'loggedinasguestuser') {
-    //             return true;
-    //         }
-    //         const response = await axios.get(`/server/api/logout`, { headers: { Authorization: sessionToken } })
-    //         if (response.status != 200) {
-    //             return false
-    //         } else {
-    //             return true
-    //         }
-    //     } catch (error) {
-    //         console.log("🚀 ~ file: APIContext.tsx:44 ~ logoutUser ~ error:", error)
-    //         return false
-    //     }
-    // }
-
     const contextValue = {
         forgotPassword,
         registerUser,
@@ -155,7 +128,7 @@ const ApiContextProvider = ({ children }) => {
         verifyOTP,
         checkForAuthentication,
         updateUser,
-        //        logoutUser,
+        user
     };
 
     return (
@@ -165,4 +138,12 @@ const ApiContextProvider = ({ children }) => {
     );
 };
 
-export default ApiContextProvider;
+export const useApi = () => {
+    const context = useContext(ApiContext);
+    if (context === undefined) {
+        throw new Error('useApi must be used within an ApiProvider');
+    }
+    return context;
+};
+
+export { ApiContextProvider as ApiProvider };

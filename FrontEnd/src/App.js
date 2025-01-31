@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* eslint-disable prettier/prettier */
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -27,36 +28,56 @@ import Wishlist from "./User/pages/Wishlist/Wishlist.jsx";
 import Terms from "./User/pages/Terms/Terms.jsx";
 
 import useUser from "./components/Contexts/User/useUser.js";
+=======
+import React from "react";
+import { UserProvider, useUser } from "./components/Contexts/UserContext";
+import { ApiProvider } from "./components/Contexts/API/APIContext";
+import { CartProvider } from "./components/Contexts/Cart/CartContext";
+>>>>>>> 50aecc8f4a546060665893c7da3397890f3214cb
 import useApi from "./components/Contexts/API/useApi.js";
 
-const App = () => {
-  const { isColorModeSet, setColorMode } = useColorModes(
-    "coreui-free-react-admin-template-theme"
-  );
-  const storedTheme = useSelector((state) => state.theme);
+import "./index.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import About from "./pages/About/About";
+import Shop from "./pages/Shop/Shop";
+import Contact from "./pages/Contact/Contact";
+import Blog from "./pages/Blog/Blog";
+import Home from "./pages/Home/Home";
+import Term from "./pages/Terms/Terms";
+import Cart from "./pages/Cart/Cart";
+import Legal from "./pages/Legal/Legal";
+import Account from "./pages/Account/Account";
+import Wishlist from "./pages/Wishlist/Wishlist";
+import Checkout from "./pages/Checkout/Checkout";
+import ProductDetail from "./components/ProductDetail/ProductDetail";
+import Login from "./pages/login/Login";
 
-  const { loggedIn } = useUser()
-  const { checkForAuthentication } = useApi()
+// Helper Component to handle authentication logic
+const AccountChecker = () => {
+  const { loggedIn, loading } = useUser();
 
-  useEffect(() => {
-    checkForAuthentication()
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    const urlParams = new URLSearchParams(window.location.href.split("?")[1]);
-    const theme =
-      urlParams.get("theme") &&
-      urlParams.get("theme").match(/^[A-Za-z0-9\s]+/)[0];
-    if (theme) {
-      setColorMode(theme);
-    }
+  return loggedIn ? <Account /> : <Navigate to="/login" replace />;
+};
 
-    if (isColorModeSet()) {
-      return;
-    }
+// Routes component
+const AppRoutes = () => {
+  const { checkForAuthentication } = useApi();
+  const { loading } = useUser();
 
-    setColorMode(storedTheme);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(() => {
+    checkForAuthentication();
+  }, [checkForAuthentication]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
+<<<<<<< HEAD
     <BrowserRouter>
       <Routes>
         {/* Default route redirects to /home */}
@@ -79,6 +100,38 @@ const App = () => {
         <Route path="*" name="Default" element={<DefaultLayout />} />
       </Routes>
     </BrowserRouter>
+=======
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/terms" element={<Term />} />
+      <Route path="/legal" element={<Legal />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/account" element={<AccountChecker />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
+    </Routes>
+  );
+};
+
+// Root App component
+const App = () => {
+  return (
+    <Router>
+      <UserProvider>
+        <ApiProvider>
+          <CartProvider>
+            <AppRoutes />
+          </CartProvider>
+        </ApiProvider>
+      </UserProvider>
+    </Router>
+>>>>>>> 50aecc8f4a546060665893c7da3397890f3214cb
   );
 };
 
