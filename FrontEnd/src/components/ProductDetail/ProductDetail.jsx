@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-import { useCart } from "../Contexts/Cart/CartContext";
+import useCart from "../Contexts/Cart/useCart";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addCartItem } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -90,7 +90,7 @@ const ProductDetail = () => {
 
     try {
       setAddingToCart(true);
-      const result = await addToCart(product, quantity);
+      const result = await addCartItem(product);
       
       if (result.success) {
         // Show success message or notification

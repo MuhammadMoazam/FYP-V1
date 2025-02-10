@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Products.css";
+import useProducts from "components/Contexts/Products/useProducts";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+
+  const { products } = useProducts();
+
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/products");
-        const data = await response.json();
-        console.log(data);
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   const productsToShow = products.slice(currentIndex, currentIndex + 5);
 

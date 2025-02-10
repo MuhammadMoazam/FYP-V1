@@ -17,10 +17,14 @@ exports.signup = async (req, res) => {
 
     // hashing the password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    req.body.password = hashedPassword;
 
     // creating new user
-    const createdUser = new User(req.body);
+    const createdUser = new User({
+      // extract username from email address
+      userName: req.body.email.trim().split("@")[0],
+      email: req.body.email,
+      password: hashedPassword
+    });
     await createdUser.save();
 
     // sending otp for verification

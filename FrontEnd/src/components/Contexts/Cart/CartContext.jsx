@@ -1,149 +1,157 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
+import Cookies from 'js-cookie';
+import useApi from '../API/useApi';
+import useUser from '../User/useUser';
 
-const CartContext = createContext();
+export const CartContext = createContext(undefined);
 
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
-};
+const CartContextProvider = ({ children }) => {
 
-export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
+    const { loggedIn } = useUser()
+    const { fetchCartItems, addCartItem: addCartItemApi, removeCartItem: removeCartItemApi, updateCartItem: updateCartItemApi, emptyCart: emptyCartApi } = useApi();
 
-  useEffect(() => {
-    // Load cart from localStorage on mount
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-  }, []);
+    const [cartItems, setCartItems] = useState([])
 
-  useEffect(() => {
-    // Update cart count whenever cartItems changes
-    const count = cartItems.reduce((total, item) => total + item.quantity, 0);
-    setCartCount(count);
-    // Save to localStorage
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    const getCartItems = async () => {
+        try {
+            if (!loggedIn) {
+                const cartCookie = Cookies.get('cart');
+                if (!cartCookie) {
+                    return;
+                }
+                setCartItems(JSON.parse(cartCookie));
+                return;
+            }
+            const response = await fetchCartItems();
 
-  const addToCart = async (product, quantity) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/cart/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: product._id,
-          quantity: quantity,
-        }),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to add item to cart');
-      }
-
-      const data = await response.json();
-      
-      setCartItems(prevItems => {
-        const existingItem = prevItems.find(item => item._id === product._id);
-        if (existingItem) {
-          return prevItems.map(item =>
-            item._id === product._id
-              ? { ...item, quantity: item.quantity + quantity }
-              : item
-          );
+            setCartItems(response);
+        } catch (error) {
+            console.log(error)
         }
-        return [...prevItems, { ...product, quantity }];
-      });
-
-      return { success: true, message: data.message };
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      return { success: false, message: error.message };
     }
-  };
 
-  const removeFromCart = async (productId) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/cart/remove/${productId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+    const addCartItem = async (item) => {
+        try {
+            if (!loggedIn) {
+                const cartCookie = Cookies.get('cart');
+                const cartItem = {
+                    _id: item,
+                    quantity: 1,
+                    product: item
+                }
+                let cart = [];
+                if (cartCookie) {
+                    cart = JSON.parse(cartCookie);
+                }
+                cart.push(cartItem);
+                Cookies.set('cart', JSON.stringify(cart));
+                getCartItems();
+                return true;
+            }
+            const response = await addCartItemApi(item);
 
-      if (!response.ok) {
-        throw new Error('Failed to remove item from cart');
-      }
-
-      setCartItems(prevItems => prevItems.filter(item => item._id !== productId));
-      return { success: true };
-    } catch (error) {
-      console.error('Error removing from cart:', error);
-      return { success: false, message: error.message };
+            setCartItems([...cartItems, response]);
+            return true;
+        } catch (error) {
+            console.log("🚀 -------------------------------🚀")
+            console.log("🚀 ~ addCartItem ~ error:", error)
+            console.log("🚀 -------------------------------🚀")
+            return false;
+        }
     }
-  };
 
-  const updateQuantity = async (productId, quantity) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/cart/update/${productId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ quantity }),
-        credentials: "include",
-      });
+    const removeCartItem = async (item) => {
+        try {
+            if (!loggedIn) {
+                const cartCookie = Cookies.get('cart');
+                const cart = JSON.parse(cartCookie);
+                const newCart = cart.filter(cartItem => cartItem._id !== item);
+                Cookies.set('cart', JSON.stringify(newCart));
+                getCartItems();
+                return true;
+            }
+            await removeCartItemApi(item);
 
-      if (!response.ok) {
-        throw new Error('Failed to update cart quantity');
-      }
-
-      setCartItems(prevItems =>
-        prevItems.map(item =>
-          item._id === productId
-            ? { ...item, quantity }
-            : item
-        )
-      );
-      return { success: true };
-    } catch (error) {
-      console.error('Error updating cart:', error);
-      return { success: false, message: error.message };
+            setCartItems(cartItems.filter(cartItem => cartItem._id !== item));
+            return true;
+        } catch (error) {
+            console.log("🚀 ----------------------------------🚀")
+            console.log("🚀 ~ removeCartItem ~ error:", error)
+            console.log("🚀 ----------------------------------🚀")
+            return false;
+        }
     }
-  };
 
-  const clearCart = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/cart/clear", {
-        method: "DELETE",
-        credentials: "include",
-      });
+    const updateCartItem = async (item, quantity) => {
+        try {
+            if (!loggedIn) {
+                const cartCookie = Cookies.get('cart');
+                const cart = JSON.parse(cartCookie);
+                const newCart = cart.map(cartItem => {
+                    if (cartItem._id === item) {
+                        return { ...cartItem, quantity };
+                    }
+                    return cartItem;
+                });
+                Cookies.set('cart', JSON.stringify(newCart));
+                getCartItems();
+                return true;
+            }
+            await updateCartItemApi(item, quantity);
 
-      if (!response.ok) {
-        throw new Error('Failed to clear cart');
-      }
-
-      setCartItems([]);
-      return { success: true };
-    } catch (error) {
-      console.error('Error clearing cart:', error);
-      return { success: false, message: error.message };
+            setCartItems(cartItems.map(cartItem => {
+                if (cartItem._id === item) {
+                    return { ...cartItem, quantity };
+                }
+                return cartItem;
+            }));
+            return true;
+        } catch (error) {
+            console.log("🚀 ----------------------------------🚀")
+            console.log("🚀 ~ updateCartItem ~ error:", error)
+            console.log("🚀 ----------------------------------🚀")
+            return false;
+        }
     }
-  };
 
-  const value = {
-    cartItems,
-    cartCount,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
-  };
+    const emptyCart = async () => {
+        try {
+            if (!loggedIn) {
+                Cookies.remove('cart');
+                getCartItems();
+                return true;
+            }
+            await emptyCartApi();
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+            setCartItems([]);
+            return true;
+        } catch (error) {
+            console.log("🚀 ----------------------------------🚀")
+            console.log("🚀 ~ emptyCart ~ error:", error)
+            console.log("🚀 ----------------------------------🚀")
+            return false;
+        }
+    }
+
+    const clearCart = () => {
+        setCartItems([]);
+    }
+
+    const contextValue = {
+        cartItems,
+        getCartItems,
+        addCartItem,
+        removeCartItem,
+        updateCartItem,
+        emptyCart,
+        clearCart
+    };
+
+    return (
+        <CartContext.Provider value={contextValue}>
+            {children}
+        </CartContext.Provider>
+    );
 };
+
+export default CartContextProvider;

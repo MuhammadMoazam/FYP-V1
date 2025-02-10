@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useUser } from '../../../components/Contexts/UserContext';
+import useUser from '../../../components/Contexts/User/useUser';
 import useApi from '../../../components/Contexts/API/useApi';
 import './Components.css';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const AccountDetails = () => {
     const { user, updateUserData } = useUser();
@@ -18,7 +19,7 @@ const AccountDetails = () => {
 
     const validateForm = () => {
         const newErrors = {};
-        
+
         if (formData.newPassword && formData.newPassword.length < 6) {
             newErrors.newPassword = 'Password must be at least 6 characters long';
         }
@@ -53,7 +54,7 @@ const AccountDetails = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validateForm()) {
             return;
         }
@@ -67,7 +68,7 @@ const AccountDetails = () => {
             };
 
             const response = await updateUser(updateData);
-            
+
             if (response.success) {
                 updateUserData(response.user);
                 setSuccessMessage('Account details updated successfully!');
@@ -95,7 +96,7 @@ const AccountDetails = () => {
     return (
         <div className="account-details">
             <h2>Account Details</h2>
-            
+
             {successMessage && (
                 <div className="success-message">
                     {successMessage}
@@ -172,13 +173,15 @@ const AccountDetails = () => {
                     </div>
                 </div>
 
-                <button 
-                    type="submit" 
-                    className="save-changes-button"
-                    disabled={isLoading}
-                >
-                    {isLoading ? 'Saving...' : 'Save Changes'}
-                </button>
+                <button className='submit-button' disabled={isLoading}> {
+                    isLoading ? (<ClipLoader
+                        color={'white'}
+                        loading={isLoading}
+                        size={30}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />) : 'Save Changes'
+                } </button>
             </form>
         </div>
     );

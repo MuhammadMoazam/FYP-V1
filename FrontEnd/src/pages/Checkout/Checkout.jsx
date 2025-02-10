@@ -1,247 +1,139 @@
-import React, { useState } from 'react';
-import Navbar from '../../components/Navbar/Navbar';
-import Footer from '../../components/Footer/Footer';
-import Banner from '../../components/Lower_Banner/Lower_Banner';
-import './Checkout.css';
+import Navbar from "../../components/Navbar/Navbar";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import "./Checkout.css";
+import Footer from "../../components/Footer/Footer";
+import useUser from "../../components/Contexts/User/useUser";
+import { Input } from "components/Input/Input";
 
-const Checkout = ({ orderItems = [], total = 0, onPlaceOrder, countries = [], states = [] }) => {
-    const [paymentMethod, setPaymentMethod] = useState('bank');
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        country: '',
-        address: '',
-        city: '',
-        state: '',
-        zip: '',
-        phone: '',
-        email: '',
-        notes: '',
-    });
+function Checkout() {
 
-    // Handle form field changes
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const { user } = useUser()
+
+    const { orderItems } = location?.state || {}
+
+    const [paymentMethod, setPaymentMethod] = useState('bank')
+    const [nameInputs, setNameInputs] = useState({ firstName: user?.name.firstName || '', lastName: user?.name.lastName || '' })
+    const [otherDetails, setOtherDetails] = useState({ country: '', state: '', city: '', street: '', postcode: '', phone: '', email: user?.email || '' })
+
+    useEffect(() => {
+        if (!orderItems) {
+            navigate('/cart')
+        }
+    }, [orderItems]);
 
     return (
         <div>
             <Navbar />
 
-            <div className="checkout-container container mx-auto px-4 py-6">
-                {/* Coupon Section */}
-                <div className="coupon-section mb-6">
-                    <p className="text-gray-700">
-                        Have a coupon? <a href="/" className="text-blue-600 underline">Click here to enter your code</a>
-                    </p>
+            <div className="checkout-container">
+
+                <div style={{ fontSize: '18px', fontFamily: 'monospace', color: 'gray', alignSelf: 'center', textAlign: 'center', width: '50%' }}>
+                    Have a Coupon? <label style={{ color: '#3b4fe4', cursor: 'pointer' }} onClick={() => { navigate('/cart') }}> Apply the coupon code in the cart!! </label>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-6">
-                    {/* Billing Details */}
-                    <div className="w-full lg:w-2/3 bg-white shadow-md p-6 rounded-lg">
-                        <h2 className="text-2xl font-semibold mb-6">Billing Details</h2>
-                        <form className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">First Name <span className="text-red-500">*</span></label>
-                                    <input
-                                        type="text"
-                                        name="firstName"
-                                        value={formData.firstName}
-                                        onChange={handleInputChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                        placeholder="John"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Last Name <span className="text-red-500">*</span></label>
-                                    <input
-                                        type="text"
-                                        name="lastName"
-                                        value={formData.lastName}
-                                        onChange={handleInputChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                        placeholder="Doe"
-                                    />
-                                </div>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'start', width: '100%', marginTop: '5rem', marginBottom: '5rem' }}>
+                    <div className="checkout-details-container">
+                        <span className="heading-1-style" style={{ fontSize: '25px', color: 'black', fontWeight: 'bold' }}>Billing Details</span>
+                        <br />
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div className='name-inputs-container'>
+                                {Input('First Name', 'text', nameInputs.firstName, (e) => { setNameInputs({ ...nameInputs, firstName: e }) })}
+                                <div style={{ width: '100px' }}></div>
+                                {Input('Last Name', 'text', nameInputs.lastName, (e) => { setNameInputs({ ...nameInputs, lastName: e }) })}
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Country <span className="text-red-500">*</span></label>
-                                <select
-                                    name="country"
-                                    value={formData.country}
-                                    onChange={handleInputChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                >
-                                    <option value="">Select a country</option>
-                                    {countries.map((country) => (
-                                        <option key={country} value={country}>{country}</option>
+                            {Input('Country', 'text', otherDetails.country, (e) => { setOtherDetails({ ...otherDetails, country: e }) })}
+                            {Input('State', 'text', otherDetails.state, (e) => { setOtherDetails({ ...otherDetails, state: e }) })}
+                            {Input('City/Town', 'text', otherDetails.city, (e) => { setOtherDetails({ ...otherDetails, city: e }) })}
+                            {Input('Street Address', 'text', otherDetails.street, (e) => { setOtherDetails({ ...otherDetails, street: e }) })}
+                            {Input('Postcode/ZIP', 'text', otherDetails.postcode, (e) => { setOtherDetails({ ...otherDetails, postcode: e }) })}
+                            {Input('Phone Number', 'text', otherDetails.phone, (e) => { setOtherDetails({ ...otherDetails, phone: e }) })}
+                            {Input('Email Address', 'email', otherDetails.email, (e) => { setOtherDetails({ ...otherDetails, email: e }) })}
+
+                            <div className='additional-info-container'>
+                                <label style={{ fontWeight: 'bold', color: 'black', fontSize: '20px' }}> Additional Information </label>
+                                <label style={{ fontWeight: 'bold', color: 'gray', fontSize: '15px' }}> Order Notes (optional) </label>
+                                <textarea style={{ width: '100%', height: '200px', borderRadius: '10px', maxHeight: '200px', marginTop: '5px', padding: '10px' }} placeholder="Notes about your order, e.g. special notes for delivery." />
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="order-items-content">
+                        <div className="table-container">
+                            <table className="product-table">
+                                <thead>
+                                    <tr className="table-header">
+                                        <th>Product</th>
+                                        <th>Subtotal (Rs.)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orderItems.map((item) => (
+                                        <tr key={item._id} className="table-row cart-item-container">
+                                            <td className="table-cell">{item.name} x {item.quantity}</td>
+                                            <td className="table-cell">{item.discountedPrice * item.quantity}</td>
+                                        </tr>
                                     ))}
-                                </select>
+                                </tbody>
+                            </table>
+
+                            <div className="cart-total-container">
+                                <span>Cart Total</span>
+
+                                <span>
+                                    {orderItems.reduce((total, item) => total + item.discountedPrice * item.quantity, 0)}
+                                </span>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Street Address <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleInputChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                    placeholder="123 Main Street"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Town / City <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    value={formData.city}
-                                    onChange={handleInputChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                    placeholder="New York"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">State <span className="text-red-500">*</span></label>
-                                    <select
-                                        name="state"
-                                        value={formData.state}
-                                        onChange={handleInputChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                    >
-                                        <option value="">Select your state</option>
-                                        {states.map((state) => (
-                                            <option key={state} value={state}>{state}</option>
-                                        ))}
-                                    </select>
+                                    <input style={{ marginTop: '20px', marginRight: '10px' }} type="radio" name="bank" id="bank" checked={paymentMethod === 'bank'} onChange={() => setPaymentMethod('bank')} />
+                                    <label style={{ fontFamily: 'monospace', color: 'gray' }}> Bank Transfer </label>
+                                    {
+                                        paymentMethod === 'bank' && (
+                                            <div style={{ marginTop: '10px', borderRadius: '10px', padding: '10px', backgroundColor: '#f5f5f5', fontFamily: 'monospace', fontSize: '12px' }}>
+                                                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                            </div>
+                                        )
+                                    }
                                 </div>
+
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Postcode / ZIP <span className="text-red-500">*</span></label>
-                                    <input
-                                        type="text"
-                                        name="zip"
-                                        value={formData.zip}
-                                        onChange={handleInputChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                        placeholder="12345"
-                                    />
+                                    <input style={{ marginTop: '20px', marginRight: '10px' }} type="radio" name="cod" id="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} />
+                                    <label style={{ fontFamily: 'monospace', color: 'gray' }}> Cash on Delivery </label>
+                                    {
+                                        paymentMethod === 'cod' && (
+                                            <div style={{ marginTop: '10px', borderRadius: '10px', padding: '10px', backgroundColor: '#f5f5f5', fontFamily: 'monospace', fontSize: '12px' }}>
+                                                Pay with cash upon delivery.
+                                            </div>
+                                        )
+                                    }
+                                </div>
+
+                                <div style={{ width: '100%', maxWidth: '500px', margin: '20px 0px' }}>
+                                    <label className='heading-2-style' >
+                                        Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <a rel="stylesheet" href="/privacy-policy" style={{ color: '#3b4fe4', textDecoration: 'none' }}>privacy policy</a>.
+                                    </label>
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Phone <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                    placeholder="123-456-7890"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Email Address <span className="text-red-500">*</span></label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm py-3" // Increased height
-                                    placeholder="example@mail.com"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Order Notes (optional)</label>
-                                <textarea
-                                    name="notes"
-                                    value={formData.notes}
-                                    onChange={handleInputChange}
-                                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm min-h-[150px]" // Increased height for textarea
-                                    placeholder="Notes about your order, e.g., special notes for delivery"
-                                ></textarea>
-                            </div>
-                        </form>
-
+                            <button className="submit-button">Place Order</button>
+                        </div>
                     </div>
 
-                    {/* Order Summary */}
-                    <div className="w-full lg:w-1/3 bg-gray-50 shadow-md p-6 rounded-lg">
-                        <h2 className="text-2xl font-semibold mb-6">Your Order</h2>
-
-                        <div className="space-y-4">
-                            {orderItems.map((item) => (
-                                <div key={item.id} className="flex justify-between text-gray-700">
-                                    <span>{item.name} × {item.quantity}</span>
-                                    <span>{item.price}</span>
-                                </div>
-                            ))}
-
-                            <div className="border-t border-gray-200 my-4"></div>
-
-                            <div className="flex justify-between font-semibold text-gray-900">
-                                <span>Subtotal</span>
-                                <span>{total}</span>
-                            </div>
-                            <div className="flex justify-between font-semibold text-gray-900">
-                                <span>Total</span>
-                                <span>{total}</span>
-                            </div>
-                        </div>
-
-                        {/* Payment Options */}
-                        <div className="mt-6">
-                            <h3 className="text-lg font-medium text-gray-700 mb-4">Payment Options</h3>
-                            <div className="space-y-2">
-                                <label className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="payment"
-                                        value="bank"
-                                        checked={paymentMethod === 'bank'}
-                                        onChange={() => setPaymentMethod('bank')}
-                                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                                    />
-                                    <span className="ml-2 text-sm text-gray-700">Direct Bank Transfer</span>
-                                </label>
-                                <p className="text-sm text-gray-500">
-                                    Make your payment directly into our bank account. Use your Order ID as the payment reference.
-                                </p>
-                                <label className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="payment"
-                                        value="cod"
-                                        checked={paymentMethod === 'cod'}
-                                        onChange={() => setPaymentMethod('cod')}
-                                        className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-                                    />
-                                    <span className="ml-2 text-sm text-gray-700">Cash on Delivery</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={() => onPlaceOrder({ ...formData, paymentMethod })}
-                            className="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                        >
-                            Place Order
-                        </button>
-                    </div>
                 </div>
+
             </div>
 
-            <Banner />
             <Footer />
-        </div>
+        </div >
     );
-};
+}
 
 export default Checkout;

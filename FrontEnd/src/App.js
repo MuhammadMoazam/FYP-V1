@@ -1,11 +1,13 @@
 import React from "react";
-import { UserProvider, useUser } from "./components/Contexts/UserContext";
-import { ApiProvider } from "./components/Contexts/API/APIContext";
-import { CartProvider } from "./components/Contexts/Cart/CartContext";
+import ApiProvider from "./components/Contexts/API/APIContext";
+import CartProvider from "./components/Contexts/Cart/CartContext";
+import ProductsProvider from "./components/Contexts/Products/ProductsContext";
+import UserProvider from "./components/Contexts/User/UserContext";
 import useApi from "./components/Contexts/API/useApi.js";
+import useUser from "./components/Contexts/User/useUser";
 
 import "./index.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./pages/About/About";
 import Shop from "./pages/Shop/Shop";
 import Contact from "./pages/Contact/Contact";
@@ -18,34 +20,23 @@ import Account from "./pages/Account/Account";
 import Wishlist from "./pages/Wishlist/Wishlist";
 import Checkout from "./pages/Checkout/Checkout";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
-import Login from "./pages/login/Login";
-
-// Helper Component to handle authentication logic
-const AccountChecker = () => {
-  const { loggedIn, loading } = useUser();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  return loggedIn ? <Account /> : <Navigate to="/login" replace />;
-};
+import Login from "./pages/Login/Login";
+import VerifyOTP from "pages/VerifyOTP/VerifyOTP";
 
 // Routes component
 const AppRoutes = () => {
-  const { checkForAuthentication } = useApi();
-  const { loading } = useUser();
+
+  const { loggedIn } = useUser()
+  const { checkForAuthentication } = useApi()
 
   React.useEffect(() => {
     checkForAuthentication();
-  }, [checkForAuthentication]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  }, []);
 
   return (
     <Routes>
+      <Route exact path="/account" name="Account" element={loggedIn ? <Account /> : <Login />} />
+      <Route exact path="/verify-otp" name="OTP Verification" element={<VerifyOTP />} />
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
@@ -54,8 +45,6 @@ const AppRoutes = () => {
       <Route path="/terms" element={<Term />} />
       <Route path="/legal" element={<Legal />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/account" element={<AccountChecker />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/product/:id" element={<ProductDetail />} />
@@ -69,9 +58,11 @@ const App = () => {
     <Router>
       <UserProvider>
         <ApiProvider>
-          <CartProvider>
-            <AppRoutes />
-          </CartProvider>
+          <ProductsProvider>
+            <CartProvider>
+              <AppRoutes />
+            </CartProvider>
+          </ProductsProvider>
         </ApiProvider>
       </UserProvider>
     </Router>

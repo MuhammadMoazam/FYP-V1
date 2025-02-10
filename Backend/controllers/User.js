@@ -25,18 +25,20 @@ const updateUser = async (req, res) => {
                 user.name.firstName = req.body.names.firstName || user.name.firstName;
                 user.name.lastName = req.body.names.lastName || user.name.lastName;
 
-                // Check if the current password is correct, if not return an error
-                const isCurrentPasswordCorrect = await bcrypt.compare(req.body.passwords.currentPassword, user.password);
-                if (isCurrentPasswordCorrect) {
-                    // If the new password is the same as the current password, return an error
-                    const isNewPasswordTheSame = await bcrypt.compare(req.body.passwords.newPassword, user.password);
-                    if (isNewPasswordTheSame) {
-                        return res.status(409).json({ message: "New password should be different from the current password" });
+                if (req.body.passwords.currentPassword !== '' && req.body.passwords.newPassword !== '') {
+                    // Check if the current password is correct, if not return an error
+                    const isCurrentPasswordCorrect = await bcrypt.compare(req.body.passwords.currentPassword, user.password);
+                    if (isCurrentPasswordCorrect) {
+                        // If the new password is the same as the current password, return an error
+                        const isNewPasswordTheSame = await bcrypt.compare(req.body.passwords.newPassword, user.password);
+                        if (isNewPasswordTheSame) {
+                            return res.status(409).json({ message: "New password should be different from the current password" });
+                        }
+                        // Hash the new password and save it to the user
+                        user.password = await bcrypt.hash(req.body.passwords.newPassword, 10);
+                    } else {
+                        return res.status(403).json({ message: "Current password is incorrect" });
                     }
-                    // Hash the new password and save it to the user
-                    user.password = await bcrypt.hash(req.body.passwords.newPassword, 10);
-                } else {
-                    return res.status(403).json({ message: "Current password is incorrect" });
                 }
 
                 await user.save();

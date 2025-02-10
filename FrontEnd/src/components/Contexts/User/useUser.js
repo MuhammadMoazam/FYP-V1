@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../UserContext";
+import { UserContext } from "./UserContext";
 
 const useUser = () => {
     const context = useContext(UserContext);
@@ -9,4 +9,4 @@ const useUser = () => {
     return context;
 };
 
-export { useUser as default } from '../UserContext';
+export default useUser
