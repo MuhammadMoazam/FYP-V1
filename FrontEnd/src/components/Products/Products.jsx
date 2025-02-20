@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Products.css";
 import useProducts from "components/Contexts/Products/useProducts";
+import { BounceLoader } from "react-spinners";
 
 const Products = () => {
-
   const { products } = useProducts();
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const productsToShow = products.slice(currentIndex, currentIndex + 5);
@@ -31,18 +30,40 @@ const Products = () => {
         <div className="products-grid">
           {productsToShow.map((product) => (
             <div key={product._id} className="product-card">
-              <Link to={`/product/${product._id}`}>
-                <span className="discount">{product.discount}</span>
-                <img src={product.imgSrc} alt={product.name} />
-                <h2 className="product-name">{product.name}</h2>
-                <p className="price">
-                  <span className="original-price">
-                    {product.originalPrice}
-                  </span>
-                  <span className="discounted-price">
-                    {product.discountedPrice}
-                  </span>
-                </p>
+              <Link to={`/products/${product._id}`}>
+                {product.discount && (
+                  <span className="discount-badge">{product.discount}</span>
+                )}
+                <img
+                  src={product.imgSrc}
+                  alt={product.name}
+                  onError={(e) => {
+                    e.target.src = "/placeholder-image.jpg"; // Handle image errors
+                  }}
+                />
+                <div className="prod1">
+                  <h3 className="product-name">{product.name}</h3>
+
+                  <button
+                    className="cart-button"
+                    disabled={false} // Add logic if needed for cart functionality
+                  >
+                    Add to Cart
+                  </button>
+
+                  <p>
+                    {product.originalPrice && (
+                      <span className="old-price">
+                        <span className="price-label">Original Price: </span>$
+                        {product.originalPrice}
+                      </span>
+                    )}
+                    <span className="new-price">
+                      <span className="price-label">Discounted Price: </span>$
+                      {product.discountedPrice || product.price}
+                    </span>
+                  </p>
+                </div>
               </Link>
             </div>
           ))}

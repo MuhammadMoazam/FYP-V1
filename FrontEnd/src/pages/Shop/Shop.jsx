@@ -145,81 +145,91 @@ const Shop = () => {
                     e.target.src = "/placeholder-image.jpg"; // Add a placeholder image
                   }}
                 />
-                <h3>{product.name}</h3>
 
-                <button
-                  disabled={loading === product._id}
-                  tabIndex={10}
-                  onClick={() => handleAddToCart(product._id)}
-                  className="cart-button"
-                >
-                  {loading === product._id ? (
-                    <BounceLoader
-                      color={"white"}
-                      loading={loading === product._id}
-                      size={20}
-                      aria-label="Loading Spinner"
-                      data-testid="loader"
-                    />
-                  ) : cartItems.some((item) => item.product === product._id) ? (
-                    (() => {
-                      const item = cartItems.find(
+                <div className="prod">
+                  <h3>{product.name}</h3>
+
+                  <button
+                    disabled={loading === product._id}
+                    tabIndex={10}
+                    onClick={() => handleAddToCart(product._id)}
+                    className="cart-button"
+                  >
+                    {loading === product._id ? (
+                      <BounceLoader
+                        color={"white"}
+                        loading={loading === product._id}
+                        size={20}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                      />
+                    ) : cartItems.some(
                         (item) => item.product === product._id
-                      );
-                      return (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            width: "100px",
-                          }}
-                        >
-                          <button
-                            className="quantity-change-button"
+                      ) ? (
+                      (() => {
+                        const item = cartItems.find(
+                          (item) => item.product === product._id
+                        );
+                        return (
+                          <div
                             style={{
-                              color: item.quantity === 1 ? "#d9534f" : "white",
-                              border:
-                                item.quantity === 1
-                                  ? "1px solid #d9534f"
-                                  : "1px solid white",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              width: "100px",
                             }}
-                            onClick={() => {
-                              if (item.quantity === 1) {
-                                removeCartItem(item._id);
-                              } else {
-                                changeQuantity(item._id, item.quantity - 1);
+                          >
+                            <button
+                              className="quantity-change-button"
+                              style={{
+                                color:
+                                  item.quantity === 1 ? "#d9534f" : "white",
+                                border:
+                                  item.quantity === 1
+                                    ? "1px solid #d9534f"
+                                    : "1px solid white",
+                              }}
+                              onClick={() => {
+                                if (item.quantity === 1) {
+                                  removeCartItem(item._id);
+                                } else {
+                                  changeQuantity(item._id, item.quantity - 1);
+                                }
+                              }}
+                            >
+                              {" "}
+                              {item.quantity === 1 ? "✖" : "-"}
+                            </button>
+                            {item.quantity}
+                            <button
+                              className="quantity-change-button"
+                              onClick={() =>
+                                changeQuantity(item._id, item.quantity + 1)
                               }
-                            }}
-                          >
-                            {" "}
-                            {item.quantity === 1 ? "✖" : "-"}
-                          </button>
-                          {item.quantity}
-                          <button
-                            className="quantity-change-button"
-                            onClick={() =>
-                              changeQuantity(item._id, item.quantity + 1)
-                            }
-                          >
-                            +
-                          </button>
-                        </div>
-                      );
-                    })()
-                  ) : (
-                    "Add to Cart"
-                  )}
-                </button>
+                            >
+                              +
+                            </button>
+                          </div>
+                        );
+                      })()
+                    ) : (
+                      "Add to Cart"
+                    )}
+                  </button>
 
-                <p>
-                  {product.originalPrice && (
-                    <span className="old-price">${product.originalPrice}</span>
-                  )}
-                  <span className="new-price">
-                    ${product.discountedPrice || product.price}
-                  </span>
-                </p>
+                  <p>
+                    {product.originalPrice && (
+                      <span className="old-price">
+                        <span className="price-label">Original Price: </span>$
+                        {product.originalPrice}
+                      </span>
+                    )}
+                    <span className="new-price">
+                      <span className="price-label">Discounted Price: </span>$
+                      {product.discountedPrice || product.price}
+                    </span>
+                  </p>
+                </div>
               </div>
             ))}
           </div>

@@ -41,25 +41,27 @@
   
   .product-card {
     border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
+    border-radius: 8px;
+    padding: 0px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
-    transition: transform 0.2s;
-    width: 180px; /* Fixed width for the card */
+    transition: transform 0.5s;
+    width: 205px; /* Fixed width for the card */
   }
     .product-card h2{
       font-size: 1.2rem;
       font-weight: 700;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
   .product-name{
     font-size: 16px;
     
   }
-  
+  .prod{
+    padding: 10px;
+  }
   .product-card:hover {
     transition: 0.3s ease-in-out;
     transform: scale(1.02); 
@@ -111,3 +113,6 @@
       width: 120px; /* Adjust width for extra small screens */
     }
   }
+.prod1{
+  padding: 10px;
+}

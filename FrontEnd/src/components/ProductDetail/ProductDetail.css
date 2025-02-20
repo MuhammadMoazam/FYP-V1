@@ -94,7 +94,7 @@
 .old-price {
   text-decoration: line-through;
   color: #999;
-  margin-right: 1rem;
+  margin-right: 0.4rem;
 }
 
 .new-price {

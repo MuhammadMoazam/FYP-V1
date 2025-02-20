@@ -47,7 +47,7 @@ const AppRoutes = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/checkout" element={<Checkout />} />
-      <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
     </Routes>
   );
 };

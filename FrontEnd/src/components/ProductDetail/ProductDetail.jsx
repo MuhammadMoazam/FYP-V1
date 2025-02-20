@@ -6,7 +6,7 @@ import useCart from "../Contexts/Cart/useCart";
 import "./ProductDetail.css";
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Retrieve product ID from URL
   const navigate = useNavigate();
   const { addCartItem } = useCart();
   const [product, setProduct] = useState(null);
@@ -19,33 +19,35 @@ const ProductDetail = () => {
     const fetchProductDetails = async () => {
       try {
         setLoading(true);
-        console.log('Fetching product with ID:', id);
-        
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
-        console.log('Response status:', response.status);
-        
+        console.log("Fetching product with ID:", id);
+
+        const response = await fetch(
+          `http://localhost:5000/api/products/${id}`
+        );
+        console.log("Response status:", response.status);
+
         if (!response.ok) {
           const errorText = await response.text();
-          console.error('Error response:', errorText);
+          console.error("Error response:", errorText);
           throw new Error(
             `Failed to fetch product (Status: ${response.status}). ${errorText}`
           );
         }
 
         const data = await response.json();
-        console.log('Received product data:', data);
-        
+        console.log("Received product data:", data);
+
         if (!data) {
-          throw new Error('No product data received');
+          throw new Error("No product data received");
         }
 
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product details:", error);
         setError(error.message);
-        if (error.message.includes('404')) {
+        if (error.message.includes("404")) {
           setTimeout(() => {
-            navigate('/shop');
+            navigate("/shop"); // Navigate back to shop if product not found
           }, 3000);
         }
       } finally {
@@ -56,9 +58,9 @@ const ProductDetail = () => {
     if (id) {
       fetchProductDetails();
     } else {
-      setError('No product ID provided');
+      setError("No product ID provided");
       setTimeout(() => {
-        navigate('/shop');
+        navigate("/shop");
       }, 3000);
     }
   }, [id, navigate]);
@@ -72,13 +74,13 @@ const ProductDetail = () => {
 
   const handleIncrement = () => {
     if (product && quantity < product.stock) {
-      setQuantity(prev => Math.min(prev + 1, product.stock));
+      setQuantity((prev) => Math.min(prev + 1, product.stock));
     }
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      setQuantity(prev => Math.max(prev - 1, 1));
+      setQuantity((prev) => Math.max(prev - 1, 1));
     }
   };
 
@@ -90,11 +92,11 @@ const ProductDetail = () => {
 
     try {
       setAddingToCart(true);
-      const result = await addCartItem(product);
-      
+      const result = await addCartItem(product, quantity); // Pass quantity to the addCartItem function
+
       if (result.success) {
-        // Show success message or notification
-        navigate('/cart');
+        // Navigate to cart or show a success message
+        navigate("/cart");
       } else {
         setError(result.message || "Failed to add item to cart");
       }
@@ -166,14 +168,18 @@ const ProductDetail = () => {
               <p className="category">Category: {product.category}</p>
               <p className="stock">
                 Status:{" "}
-                <span className={product.stock > 0 ? "in-stock" : "out-of-stock"}>
-                  {product.stock > 0 ? `In Stock (${product.stock} available)` : "Out of Stock"}
+                <span
+                  className={product.stock > 0 ? "in-stock" : "out-of-stock"}
+                >
+                  {product.stock > 0
+                    ? `In Stock (${product.stock} available)`
+                    : "Out of Stock"}
                 </span>
               </p>
             </div>
 
             <div className="quantity-selector">
-              <button 
+              <button
                 onClick={handleDecrement}
                 disabled={quantity <= 1}
                 className="quantity-btn"
@@ -188,7 +194,7 @@ const ProductDetail = () => {
                 max={product.stock}
                 className="quantity-input"
               />
-              <button 
+              <button
                 onClick={handleIncrement}
                 disabled={quantity >= product.stock}
                 className="quantity-btn"
@@ -202,7 +208,11 @@ const ProductDetail = () => {
               onClick={handleAddToCart}
               disabled={product.stock === 0 || addingToCart}
             >
-              {addingToCart ? "Adding to Cart..." : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+              {addingToCart
+                ? "Adding to Cart..."
+                : product.stock === 0
+                ? "Out of Stock"
+                : "Add to Cart"}
             </button>
             {error && <p className="error-message">{error}</p>}
           </div>
