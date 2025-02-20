@@ -15,7 +15,12 @@ const Shop = () => {
   const navigate = useNavigate();
 
   const { products: allProducts, getProducts } = useProducts();
-  const { cartItems, addCartItem, removeCartItem: removeCartItemApi, updateCartItem } = useCart();
+  const {
+    cartItems,
+    addCartItem,
+    removeCartItem: removeCartItemApi,
+    updateCartItem,
+  } = useCart();
 
   const [sortOption, setSortOption] = useState("default");
   const [products, setProducts] = useState(allProducts);
@@ -42,14 +47,13 @@ const Shop = () => {
   };
 
   const handleProductClick = (productId) => {
-    console.log('Clicking product with ID:', productId);
+    console.log("Clicking product with ID:", productId);
     if (!productId) {
-      console.error('No product ID provided');
+      console.error("No product ID provided");
       return;
     }
     navigate(`/product/${productId}`);
   };
-
 
   async function initialize() {
     setLoading(true);
@@ -57,36 +61,36 @@ const Shop = () => {
       await getProducts();
       setProducts(allProducts);
     } catch (error) {
-      console.log("🚀 ------------------------------🚀")
-      console.log("🚀 ~ initialize ~ error:", error)
-      console.log("🚀 ------------------------------🚀")
+      console.log("🚀 ------------------------------🚀");
+      console.log("🚀 ~ initialize ~ error:", error);
+      console.log("🚀 ------------------------------🚀");
       setError(error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   const handleAddToCart = async (product) => {
     setLoading(product);
     const itemExists = cartItems.some((item) => item.product === product);
     if (itemExists) {
-      setLoading('');
+      setLoading("");
       return;
     }
     await addCartItem(product);
-    setLoading('');
+    setLoading("");
   };
 
   async function changeQuantity(item, quantity) {
     setLoading(item);
     await updateCartItem(item, quantity);
-    setLoading('');
+    setLoading("");
   }
 
   async function removeCartItem(item) {
     setLoading(item);
     await removeCartItemApi(item);
-    setLoading('');
+    setLoading("");
   }
 
   useEffect(() => {
@@ -126,7 +130,7 @@ const Shop = () => {
               <div
                 key={product._id}
                 className="product-card"
-                //onClick={() => handleProductClick(product._id)} *commented out because it interferes with the cart button.... 
+                //onClick={() => handleProductClick(product._id)} *commented out because it interferes with the cart button....
                 role="button"
                 tabIndex={0}
               >
@@ -138,38 +142,75 @@ const Shop = () => {
                   alt={product.name}
                   onError={(e) => {
                     //console.error('Error loading image for product:', product._id);
-                    e.target.src = '/placeholder-image.jpg'; // Add a placeholder image
+                    e.target.src = "/placeholder-image.jpg"; // Add a placeholder image
                   }}
                 />
                 <h3>{product.name}</h3>
 
-                <button disabled={loading === product._id} tabIndex={10} onClick={() => handleAddToCart(product._id)} className="cart-button">{loading === product._id ? (
-                  <BounceLoader
-                    color={'white'}
-                    loading={loading === product._id}
-                    size={20}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                  />) : cartItems.some(item => item.product === product._id) ? (
+                <button
+                  disabled={loading === product._id}
+                  tabIndex={10}
+                  onClick={() => handleAddToCart(product._id)}
+                  className="cart-button"
+                >
+                  {loading === product._id ? (
+                    <BounceLoader
+                      color={"white"}
+                      loading={loading === product._id}
+                      size={20}
+                      aria-label="Loading Spinner"
+                      data-testid="loader"
+                    />
+                  ) : cartItems.some((item) => item.product === product._id) ? (
                     (() => {
-                      const item = cartItems.find(item => item.product === product._id);
+                      const item = cartItems.find(
+                        (item) => item.product === product._id
+                      );
                       return (
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100px' }}>
-                          <button className="quantity-change-button" style={{ color: item.quantity === 1 ? '#d9534f' : 'white', border: item.quantity === 1 ? '1px solid #d9534f' : '1px solid white' }} onClick={() => {
-                            if (item.quantity === 1) {
-                              removeCartItem(item._id);
-                            } else {
-                              changeQuantity(item._id, item.quantity - 1);
-                            }
-                          }}> {item.quantity === 1 ? '✖' : '-'}</button>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            width: "100px",
+                          }}
+                        >
+                          <button
+                            className="quantity-change-button"
+                            style={{
+                              color: item.quantity === 1 ? "#d9534f" : "white",
+                              border:
+                                item.quantity === 1
+                                  ? "1px solid #d9534f"
+                                  : "1px solid white",
+                            }}
+                            onClick={() => {
+                              if (item.quantity === 1) {
+                                removeCartItem(item._id);
+                              } else {
+                                changeQuantity(item._id, item.quantity - 1);
+                              }
+                            }}
+                          >
+                            {" "}
+                            {item.quantity === 1 ? "✖" : "-"}
+                          </button>
                           {item.quantity}
-                          <button className="quantity-change-button" onClick={() => changeQuantity(item._id, item.quantity + 1)}>+</button>
+                          <button
+                            className="quantity-change-button"
+                            onClick={() =>
+                              changeQuantity(item._id, item.quantity + 1)
+                            }
+                          >
+                            +
+                          </button>
                         </div>
                       );
                     })()
-                  )
-                  : 'Add to Cart'
-                }</button>
+                  ) : (
+                    "Add to Cart"
+                  )}
+                </button>
 
                 <p>
                   {product.originalPrice && (
